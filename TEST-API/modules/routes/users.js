@@ -14,7 +14,7 @@ exports.users = (app, client, database) => {
 
             try {
 
-                //Prendo il riferimento alla collection data
+                //Prendo il riferimento alla collection data (non copia in memoria la collezione ma solo un riferimento di dove si trova)
                 const collection = database.collection('data');
                 
                 //Collection.find({}) ritorna l'intero contenuto della collection
