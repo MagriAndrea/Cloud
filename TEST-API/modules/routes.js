@@ -7,6 +7,6 @@ exports.routes = (app, client, database) => {
 
     //INIZIALIZZO LE ROUTES
 
-    userRoutes.users(app, client, database) //userRoutes è il file che ho richiamato .users è la funzione che ho dichiarato in users.js
+    userRoutes.users(app, client, database) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
     postRoutes.posts(app, client, database)
 }

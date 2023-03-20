@@ -33,4 +33,4 @@ app.listen(4000, () => {
 
 //AGGIUNGO GLI ENDPOINT
 
-routes.routes(app, client, database); //routes è il file .routes è la funzione
+routes.routes(app, client, database); //routes è il file, .routes è la funzione
