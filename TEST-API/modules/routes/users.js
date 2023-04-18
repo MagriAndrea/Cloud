@@ -89,82 +89,6 @@ exports.users = (app, client, database) => {
     })
 
     // //ENDPOINT POST che permette di aggiungere un user al database
-    // app.post('/users/add', async (req, res) => {
-    //     //Quando si effettua un post, ciò che si vuole postare si trova dentro il body
-    //     //Non uso l'autenticazione perchè se no diventa impossibile il login ad un nuovo utente
-    //     try {
-
-    //         const collection = database.collection('data');
-
-    //         //Controllo che non esista gia l'utente inserito per rendere le email univoche
-    //         //Serve per non dare problemi con le query
-    //         const checkUser = await collection.find({email: req.body.email}).toArray();
-
-    //         //Se l'utente non è gia nel database
-    //         if ( checkUser.length === 0 ) {
-
-    //             //Prendo il necessario per effettuare il confrono della password hashata e password in chiaro
-    //             const bcrypt = require('bcrypt');
-    //             const saltRounds = 10;
-    //             const myPlaintextPassword = req.body.password;
-
-    //             //Si usa await perchè bycript.hash, nonostante non sia niente che centra con il database, ritorna una promise
-    //             //Ora traduco la password in chiaro, in passoword hashata in modo che non sia visibile (leggibile, più che altro) nel database
-    //             const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
-
-    //             //Creo l'oggetto che viene poi inserito nel database; traduco l'oggeto passato dalla richiesta in un oggetto che va bene nel database
-    //             const userData = {
-
-    //                 email: req.body.email,
-    //                 password: hashedPassword,
-    //                 role: req.body.role,
-    //                 usage: {
-    //                     //L'ultima richiesta è chiaramente stata effettuata quando è stato creato l'oggetto
-    //                     latestRequestDate: new Date().toLocaleDateString(), 
-    //                     //Giustamente è stata fatta solo una richiesta, quella di creare il documento (record)
-    //                     numberOfRequests: 1
-    //                 }
-
-    //             };
-
-    //             //Usiamo la funzione di javascript truty; le stringhe, qualuque siano, vengono valutate come true, se sono vuote (""), vengono valutate come false 
-    //             if ( userData.email && userData.password && userData.role ) {
-
-    //                 //Forzatura del ruolo, o admin o user, qualunque altra opzione viene convertita in "user"
-    //                 if ( userData.role !== 'admin' && userData.role !== 'user' ) {
-
-    //                     userData.role = 'user';
-
-    //                 }
-
-    //                 //InsertOne crea un documento, e inserisce la varie proprietà
-    //                 const result = await collection.insertOne({ email: userData.email, password: userData.password, role: userData.role, usage: userData.usage });
-
-    //                 //Faccio capire a chi ha chiamato l'endpoint che l'operazione è stata svolta con successo
-    //                 res.sendStatus(200);
-
-    //             } else {
-
-    //                 //Ritorno che la richiesta è stata fatta male
-    //                 res.status(400).send("Inserisci tutti i valori");
-
-    //             }
-
-    //         } else {
-
-    //             res.sendStatus(400);
-
-    //         } 
-
-    //     } catch (error) {
-
-    //         res.sendStatus(400);
-
-    //     }
-
-    // });
-
-    // //ENDPOINT POST che permette di aggiungere un user al database
     app.post("/users/add", async (req, res) => {
         
         try {
@@ -178,7 +102,7 @@ exports.users = (app, client, database) => {
                 //L'email deve essere univoca
                 const checkUser = await collection.find({email: req.body.email}).toArray();
                 
-                if (checkUser.length !== 0) {
+                if (checkUser.length == 0) {
                 
                     //GESTIONE PASSWORD
                     //Trasformo la passowrd in chiaro in password hashata con bcrypt
@@ -205,7 +129,7 @@ exports.users = (app, client, database) => {
                     }
 
                     //Se tutto va bene allora inserisco il dato nel database
-                    await collection.insertOne({email: userData.email, password: userData.password, role: userData.role, usage: userData.usage})
+                    const result = await collection.insertOne({email: userData.email, password: userData.password, role: userData.role, usage: userData.usage})
 
                     res.sendStatus(200);
 
@@ -226,87 +150,94 @@ exports.users = (app, client, database) => {
     })
 
     //ENDPOINT DI TIPO PUT che aggiorna un documento in base a cosa è stato passato nell'header
-    app.put('/users/update', async (req, res) => {
-
-        const authenticate = await auth.authentication(client, database, req);
+    app.put("/users/update", async (req, res) => {
         
-        if ( authenticate === 200 ) {
+        const authenticate = await auth.authentication(client, database, req);
 
-            try {
+        if (authenticate === 200) {
 
-                const collection = database.collection('data');
+            //VERIFICA DATI
+            if (req.body.email && req.body.password && req.body.role) {
 
-                if ( req.body.email && req.body.password && req.body.role ) {
+                try {
 
-                    if ( req.body.role !== 'admin' && req.body.role !== 'user' ) {
+                    const collection = await database.collection("data")
+                    
+                    //CONTROLLO UNIVOCITA' EMAIL DA INSERIRE
+                    const email = req.body.email
+                    const checkUser = await collection.find({email:email}).toArray();
 
-                        req.body.role = 'user';
+                    if (checkUser.length == 0) {
 
+                        //GESTIONE PASSWORD
+                        const bcrypt = require("bcrypt")
+                        const saltRounds = 10
+                        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+
+                        //GESTIONE RUOLO
+                        const role = req.body.role == "admin" ? "admin" : "user"
+
+                        //Modifico dati del database
+                        const result = await collection.updateOne(
+                            {email: req.headers.email}, //Qui specifico l'email passata nella header perchè mi serve per indicare quale documento modificare
+                            { $set: {email:email, password:hashedPassword, role:role}}
+                            ) //Qua sotto specifico l'email presa dal body, nel caso voglia cambiare l'email
+
+                        res.sendStatus(200)
+
+                    } else {
+                        res.status(400).send("Email gia registrata, prova con un altra!")
                     }
+                            
+                } catch (error) {
+                    console.log(error)
+                    res.sendStatus(400)
+                }   
 
-                    const bcrypt = require('bcrypt');
-                    const saltRounds = 10;
-                    const myPlaintextPassword = req.body.password;
-
-                    const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
-
-                    //In update bisogna specificare quale documento aggiornare
-                    const result = await collection.updateOne({ email: req.headers['email'] }, { $set: { email: req.body.email, password: hashedPassword, role: req.body.role } });
-
-                    res.sendStatus(200);
-
-                } else {
-
-                    res.sendStatus(400);
-
-                }
-    
-            } catch (error) {
-
-                console.log(error)
-    
-                res.sendStatus(400);
-    
+            } else {
+                res.status(400).send("Inserisci tutti i campi obbligatori!")
             }
 
+
         } else {
-
-            res.sendStatus(401);
-
+            res.status(401)
         }
+    })
 
-    });
-
-    //ENDPOINT DI TIPO DELETE che elimina tutti i documenti appartenenti all'user autenticato
-    app.delete('/users/delete', async (req, res) => {
-
+    //ENDPOINT DI TIPO DELETE che elimina il documento dell'user che fa la richiesta
+    app.delete("/users/delete", async (req, res) => {
+            
         const authenticate = await auth.authentication(client, database, req);
-        
-        if ( authenticate === 200 ) {
+
+        if (authenticate === 200) {
+
+            //Una volta autenticato, non serve altro per iniziare la cancellazione
 
             try {
 
-                const collection = database.collection('data');
+                const collection = await database.collection("data")
+                
+                //Prendo email che mi dice dove cancellare, da header, non da body, perchè si puo cancellare solo il proprio account, non quello degli altri
+                const email = req.headers.email
 
-                //DeleteMany cancella l'intero documento in cui trova tale email
-                const result = await collection.deleteMany({ email: req.headers['email'] });
+                const result = collection.deleteMany({email:email})
 
-                res.sendStatus(200);
-    
+                res.sendStatus(200)
+
+                        
             } catch (error) {
-
                 console.log(error)
-    
-                res.sendStatus(400);
-    
-            }
+                res.sendStatus(400)
+            } 
+
 
         } else {
-
-            res.sendStatus(401);
-
+            res.status(401)
         }
-
-    });
+    })
+    
 
 }
+
+
+
