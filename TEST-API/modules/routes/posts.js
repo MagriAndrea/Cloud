@@ -135,17 +135,17 @@ exports.posts = (app, client, database) => {
         
         //AUTENTICAZIONE
         //Autentico il client che fa la richiesta per sapere a chi aggiungere il post
-        const authenticate = auth.authentication(client, database, req)
+        const authenticate = await auth.authentication(client, database, req)
 
         if (authenticate === 200) {
         
             try {
 
-                const collection = database.collection("data")
+                const collection = await database.collection("data")
 
                 //CONTROLLO DATI OBBLIGATORI
 
-                if (req.body.title && req.query.content) {
+                if (req.body.title && req.body.content) {
 
                     //Prendo i dati necessari 
                     const email = req.headers.email
@@ -154,11 +154,11 @@ exports.posts = (app, client, database) => {
                     const content = req.body.content
 
                     //Genero un id random
-                    const id = math.random
+                    const randId = Math.floor(1 + Math.random()* 0x10000).toString(16)
 
-                    const result = collection.updateOne({email:email}, {$push: 
+                    const result = await collection.updateOne({email:email}, {$push: 
                         { posts: {
-                            id:id,
+                            id:randId,
                             title:title,
                             content:content
                         }}}
