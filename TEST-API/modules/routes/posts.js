@@ -161,57 +161,51 @@ exports.posts = (app, client, database) => {
 
 
     })
-    /*
-    app.put('/posts/update/:id', async (req, res) => {
-
-        const authenticate = await auth.authentication(client, database, req);
-        
-        if ( authenticate === 200 ) {
-
-            try {
-
-                const collection = database.collection('data');
-                //La virgola che separa {email: ... , 'posts.id': ...} viene considerata come un and
-                //Queste 2 condizioni le usiamo per una maggiore sicurezza, basterebbe solo la seconda ma la usiamo per evitare id uguali
-                //Scrivere email: req.hea... serve solo come ulteriore filtro
-                //email e 'posts.id' sono due campi dello stesso documento
-                const result = await collection.updateOne({ email: req.headers['email'], 'posts.id': req.params.id }, 
-                //Una volta che il filtro (l'oggetto con email:...) trova cio che ho specificato, si segna l'indice
-                //Il $ serve per dire: l'indice dove il filtro è true
-                { $set: { 'posts.$.title': req.body.title, 'posts.$.content': req.body.content } });
-
-                res.sendStatus(200);
-    
-            } catch (error) {
-
-                console.log(error)
-    
-                res.sendStatus(400);
-    
-            }
-
-        } else {
-
-            res.sendStatus(401);
-
-        }
-
-        
-    }); 
-*/
 
     //ENDPOINT DI TIPO PUT che aggiorna un post in base all'id
     app.put("/posts/put/:id", async (req, res) => {
 
-        const authenticate = auth.authentication(client, database, req)
+        const authenticate = await auth.authentication(client, database, req)
 
+        //Controllo autenticazione
         if (authenticate === 200) {
 
+            //Contollo che il parametro sia stato passato
             if (req.params.id) {
 
                 try {
 
-                    const collection = database.collection("data")
+                    const collection = await database.collection("data")
+
+                    //GESTIONE DATI
+                    const email = req.headers.email
+                    const id = req.params.id
+
+                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
+
+                    //Se c'è l'id nel database
+                    if (checkId !== 0) {
+
+                        //Prendo i dati dal body
+                        const title = req.body.title
+                        const content = req.body.content
+
+                        //Se sono stati inseriti i dati nel body
+                        if (title && content) {
+                
+                            //Per elementi composti basta metterli tra le virgolette
+                            const result = await collection.updateOne({email: email, 'posts.id':id}, { $set : {
+                                'posts.$.title': req.body.title, 'posts.$.content': req.body.content } });
+
+                            res.sendStatus(200)
+
+                        } else {
+                            res.status(400).send("Inserisci un titolo e un contenuto!")
+                        }
+
+                    } else {
+                        res.status(404).send("Id non trovato")
+                    }
 
                 } catch (error) {
                     console.log(error)
@@ -219,7 +213,7 @@ exports.posts = (app, client, database) => {
                 }
 
             } else {
-                res.status(400).send("Inserisci tutti i parametri!")
+                res.status(400).send("Inserisci il parametro id")
             }
 
         } else {
@@ -228,35 +222,49 @@ exports.posts = (app, client, database) => {
 
     })
 
-    app.delete('/posts/delete/:id', async (req, res) => {
+    //ENDPOINT DELETE che cancella in base all'id passato come parametro
+    app.delete("/posts/delete/:id", async (req, res) => {
 
-        const authenticate = await auth.authentication(client, database, req);
-        
-        if ( authenticate === 200 ) {
+        const authenticate = await auth.authentication(client, database, req)
 
-            try {
+        if (authenticate === 200) {
 
-                const collection = database.collection('data');
-                
-                //$pull elimina tutte le instanze che matchano la condizione
-                const result = await collection.updateOne({ email: req.headers['email']}, { $pull: {posts: {id : req.params.id }}});
+            //Controllo id
+            const id = req.params.id
 
-                res.sendStatus(200);
-    
-            } catch (error) {
+            if (id) {
 
-                console.log(error)
-    
-                res.sendStatus(400);
-    
+                try {
+
+                    const collection = await database.collection("data")
+
+                    //Gestione mail
+                    const email = req.headers.email
+
+                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
+
+                    if (checkId) {
+                        //Filtro email e posts.id e tolgo ($pull) i posts che hanno tale id
+                        const result = await collection.updateOne({email:email, 'posts.id':id}, { $pull : {posts :{id: id}} })
+
+                        res.sendStatus(200)
+                        
+                    } else {
+                        res.status(400).send("Id non trovato!")
+                    }
+
+                } catch (error) {
+                    console.log(error)
+                    res.sendStatus(400)
+                }
+
+            } else {
+                res.status(400).send("Specifica l'id!")
             }
 
         } else {
-
-            res.sendStatus(401);
-
+            res.sendStatus(401)
         }
 
-    });
-
+    })
 }
