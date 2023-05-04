@@ -4,9 +4,11 @@ exports.routes = (app, client, database) => {
 
     const userRoutes = require('./routes/users') //Richiamo i file
     const postRoutes = require('./routes/posts')
+    const commentRoutes = require('./routes/comments')
 
     //INIZIALIZZO LE ROUTES
 
     userRoutes.users(app, client, database) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
     postRoutes.posts(app, client, database)
+    commentRoutes.comments(app, client, database)
 }

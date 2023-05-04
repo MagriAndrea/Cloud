@@ -1,9 +1,9 @@
-exports.posts = (app, client, database) => {
+exports.comments = (app, client, database) => {
 
     const auth = require('../authentication');
 
-    //ENDPOINT GET che prende tutti i post
-    app.get("/posts/get", async (req, res) => {
+    //ENDPOINT GET che prende tutti i commenti dato un post
+    app.get("/posts/:post_id/comments/get", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req);
 
@@ -21,24 +21,26 @@ exports.posts = (app, client, database) => {
                 
                 const order = req.query.order == "reverse" ? "reverse" : "default";
 
-                //Gestione email
+                //Gestione email e post_id
                 const email = req.headers.email
 
+                const postId = req.params.post_id
 
-                const result = await collection.find({email:email}).toArray();
+
+                const result = await collection.find({email:email, 'posts.id':postId}).toArray();
 
                 if (result !== 0) {
-                    
-                    //Vario i risultati in base all'order che mi è stato passato
-                    if (order == "default") {
-                        res.send(result[0].posts.slice(0, limit))
-                    } else {
-                        res.send(result[0].posts.slice(0, limit).reverse())
-                    }
-
-                //Non scrivo res.sendStatus() perchè nelle instruzione sopra viene gia ritornato qualcosa e lo status in automatico è 200
+                    //Tra tutti i post di questo utente
+                    result[0].posts.forEach((post) => {
+                        //Se il post id è = a quello passato come parametro
+                        if (post.id === postId) {
+                            res.send(post.comments)
+                        }
+                        
+                    })
 
                 } else {
+
                     res.sendStatus(404)
                 }
 
@@ -56,48 +58,57 @@ exports.posts = (app, client, database) => {
     });
 
     //ENDPOINT GET che prende solo un post in base all id
-    app.get("/posts/get/:id", async (req, res) => {
+    app.get("/posts/:post_id/comments/get/:id", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
         if (authenticate === 200) {
 
-            if (req.params.id) {
+            try {
 
-                try {
+                const collection = await database.collection("data");
 
-                    const collection = await database.collection("data");
+                //GESTIONE DATI
+                const postId = req.params.post_id
+                const id = req.params.id
 
-                    //GESTIONE DATI
-                    //Gestione id
-                    const id = req.params.id
-
-                    //Sintassi: "array" :{ $elemMatch :{chiave:valore}}
-                    //$elemMatch trova tra gli oggetti dell'array, quale oggetto ha un campo id = id
-                    const result = await collection.find({posts : { $elemMatch : {id:id} }}).toArray()
-
-                    if (result.length !== 0) {
-                        //Tra tutti i post di questo utente
-                        result[0].posts.forEach((post) => {
-                            //Se il post id è = a quello passato come parametro
-                            if (post.id === id) {
-                                res.send(post)
-                            }
-                            
-                        })
-
-                    } else {
-
-                        res.sendStatus(404)
+                const result = await collection.find({
+                    'posts': {
+                        $elemMatch: {
+                            'id': postId,
+                            'comments.id': id
+                        }
                     }
+                }).toArray();
 
-                } catch (error) {
-                    console.log(error)
-                    res.sendStatus(400)
+
+                if (result.length === 0) {
+                    // Invia una risposta con codice di stato 404 se non viene trovato alcun documento corrispondente
+                    res.sendStatus(404);
+                } else {
+                    // Cerca il post con l'id specificato
+                    const post = result[0].posts.find(post => post.id === postId);
+
+                    if (!post) {
+                        // Invia una risposta con codice di stato 404 se non viene trovato alcun post corrispondente
+                        res.sendStatus(404);
+                    } else {
+                        // Cerca il commento con l'id specificato
+                        const comment = post.comments.find(comment => comment.id === id);
+                        if (!comment) {
+                            // Invia una risposta con codice di stato 404 se non viene trovato alcun commento corrispondente
+                            res.sendStatus(404);
+                        } else {
+                            // Invia una risposta contenente il commento specificato
+                            res.send(comment);
+                        }
+                    }
                 }
+                
 
-            } else {
-                res.status(400).send("Inserisci tutti i campi!")
+            } catch (error) {
+                console.log(error)
+                res.sendStatus(400)
             }
 
         } else {
@@ -108,7 +119,7 @@ exports.posts = (app, client, database) => {
 
 
     //ENDPOINT POST che aggiugne un singolo post
-    app.post("/posts/add", async (req, res) => {
+    app.post("/posts/:post_id/comments/add", async (req, res) => {
         
         //AUTENTICAZIONE
         //Autentico il client che fa la richiesta per sapere a chi aggiungere il post
@@ -122,21 +133,20 @@ exports.posts = (app, client, database) => {
 
                 //CONTROLLO DATI OBBLIGATORI
 
-                if (req.body.title && req.body.content) {
+                if (req.body.content) {
 
                     //Prendo i dati necessari 
                     const email = req.headers.email
+                    const postId = req.params.post_id
 
-                    const title = req.body.title
                     const content = req.body.content
 
                     //Genero un id random
                     const randId = Math.floor(1 + Math.random()* 0x10000).toString(16)
 
-                    const result = await collection.updateOne({email:email}, {$push: 
-                        { posts: {
+                    const result = await collection.updateOne({email:email, 'posts.id':postId}, {$push: 
+                        { 'posts.$.comments': {
                             id:randId,
-                            title:title,
                             content:content
                         }}}
                     )
@@ -163,7 +173,7 @@ exports.posts = (app, client, database) => {
     })
 
     //ENDPOINT DI TIPO PUT che aggiorna un post in base all'id
-    app.put("/posts/put/:id", async (req, res) => {
+    app.put("/posts/:post_id/comments/update/:id", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
@@ -179,23 +189,33 @@ exports.posts = (app, client, database) => {
 
                     //GESTIONE DATI
                     const email = req.headers.email
+                    const postId = req.params.post_id
                     const id = req.params.id
 
-                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
+                    const checkId = await collection.find({email:email, 'posts.id':postId, 'posts.comments.id':id}).toArray()
 
                     //Se c'è l'id nel database
                     if (checkId !== 0) {
 
                         //Prendo i dati dal body
-                        const title = req.body.title
                         const content = req.body.content
 
                         //Se sono stati inseriti i dati nel body
-                        if (title && content) {
+                        if (content) {
                 
                             //Per elementi composti basta metterli tra le virgolette
-                            const result = await collection.updateOne({email: email, 'posts.id':id}, { $set : {
-                                'posts.$.title': req.body.title, 'posts.$.content': req.body.content } });
+                            const result = await collection.updateOne(
+                                { email: email },
+                                { $set: { 'posts.$[post].comments.$[comment].content': content } },
+                                
+                                {
+                                    //arrayFilters viene eseguito prima di $set, prima infatti esso guarda 
+                                  arrayFilters: [
+                                    { 'post.id': postId },
+                                    { 'comment.id': id }
+                                  ]
+                                }
+                              );
 
                             res.sendStatus(200)
 
@@ -223,7 +243,7 @@ exports.posts = (app, client, database) => {
     })
 
     //ENDPOINT DELETE che cancella in base all'id passato come parametro
-    app.delete("/posts/delete/:id", async (req, res) => {
+    app.delete("/posts/:post_id/comments/delete/:id", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
@@ -231,6 +251,7 @@ exports.posts = (app, client, database) => {
 
             //Controllo id
             const id = req.params.id
+            const postId = req.params.post_id
 
             if (id) {
 
@@ -241,11 +262,13 @@ exports.posts = (app, client, database) => {
                     //Gestione mail
                     const email = req.headers.email
 
-                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
+                    const checkId = await collection.find({email:email, 'posts.id':postId, 'posts.comments.id':id}).toArray()
 
                     if (checkId) {
                         //Filtro email e posts.id e tolgo ($pull) i posts che hanno tale id
-                        const result = await collection.updateOne({email:email, 'posts.id':id}, { $pull : {posts :{id: id}} })
+                        const result = await collection.updateOne({email:email, 'posts.id':postId},
+                         { $pull : {'posts.$.comments':{
+                            id: id}} })
 
                         res.sendStatus(200)
                         
