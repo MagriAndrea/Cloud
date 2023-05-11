@@ -1,5 +1,7 @@
 exports.authentication = async (client, database, req) => {
+    
     try {
+
         const collection = database.collection('data');
 
         //1 Cerco nel database il documento che contiene l'email passata nell'header

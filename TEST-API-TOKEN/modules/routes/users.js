@@ -221,14 +221,14 @@ exports.users = (app, client, database) => {
                 const email = req.headers.email
 
                 const result = await collection.deleteMany({email:email})
-
+                
                 if (result.deletedCount !== 0 ) {
                     res.sendStatus(200)
                 } else {
                     res.sendStatus(404)
                 }
 
-                        
+                    
             } catch (error) {
                 console.log(error)
                 res.sendStatus(400)
