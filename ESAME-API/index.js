@@ -21,7 +21,7 @@ const uri = "mongodb://127.0.0.1:27017"
 
 const client = new MongoClient(uri)
 
-const database = client.db("node_api")
+const database = client.db("esame_api")
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true})) //Permette in postman di passare i parametri checkando x-www-form-urlencoded

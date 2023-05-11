@@ -1,4 +1,4 @@
-exports.posts = (app, client, database) => {
+exports.buyers = (app, client, database) => {
 
     const auth = require('../authentication');
 
