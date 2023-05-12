@@ -14,7 +14,7 @@ exports.books = (app, client, database) => {
                 //Se viene passato l'isbn allora aggiunti la voce isbn:req.query.isbn all oggetto filtro
                 req.query.isbn ? (filter.isbn = req.query.isbn) : ""; //Metto "" se no pensa che l'else sia la riga sotto
                 req.query.title ? (filter.title = req.query.title) : "";
-                req.query.pages ? (filter.pages = req.query.pages) : "";
+                req.query.pages ? (filter.pages = parseInt(req.query.pages)) : ""; //parseInt perchè pages:"352" non è considerato numero
                 const order = req.query.order === "desc" ? "desc" : "asc";
 
                 const result = await collection.find(filter).toArray();
@@ -56,9 +56,9 @@ exports.books = (app, client, database) => {
             const subtitle = req.body.subtitle
             const author = req.body.author
             const publisher = req.body.publisher
-            const pages = req.body.pages
+            const pages = parseInt(req.body.pages)
             const description = req.body.description
-            const purchases = req.body.purchases
+            const purchases = parseInt(req.body.purchases)
 
             if (isbn && title && subtitle && author && publisher && pages && description && purchases) {
 
@@ -102,38 +102,45 @@ exports.books = (app, client, database) => {
         const authenticate = await auth.authentication(client, database, req);
 
         if (authenticate.status === 200 && authenticate.role === "rw") {
-            
+
             try {
 
                 const collection = await database.collection("data");
 
-                const isbn = req.params.isbn
+                const newIsbn = req.body.isbn
 
-                const resu = await collection.find({ isbn: isbn }).toArray();
+                const oldIsbn = req.params.isbn
 
-                if (resu.length !== 0) {
-                    
+                const checkIsbn = await collection.find({ isbn: newIsbn }).toArray();
+
+                if (checkIsbn.length == 0) {
+
+                    //Questo prende i dati in caso non vengano cambiati
+                    const resu = await collection.find({ isbn: oldIsbn }).toArray();
+
                     //Prendo i dati dal body    
                     //Qusto sfracco di roba serve per permettere l'omissione dei campi
                     var payload = {}
-                    req.body.isbn ? payload.isbn = req.body.isbn : resu[0].isbn;
-                    req.body.title ? payload.title = req.body.title : resu[0].title;
-                    req.body.subtitle ? payload.subtitle = req.body.subtitle : resu[0].subtitle;
-                    req.body.author ? payload.author = req.body.author : resu[0].author;
-                    req.body.publisher ? payload.publisher = req.body.publisher : resu[0].publisher;
-                    req.body.pages ? payload.pages = req.body.pages : resu[0].pages;
-                    req.body.description ? payload.description = req.body.description : resu[0].description;
-                    req.body.purchases ? payload.purchases = req.body.purchases : resu[0].purchases
+                    //Logica: payload.isbn = se c'è, isbn nel body della richiesta OPPURE se il database ha trovato 
+                    // un isbn, metti quello altimenti undefined
+                    payload.isbn = req.body.isbn || (resu[0] && resu[0].isbn);
+                    payload.title = req.body.title || (resu[0] && resu[0].title);
+                    payload.subtitle = req.body.subtitle || (resu[0] && resu[0].subtitle);
+                    payload.author = req.body.author || (resu[0] && resu[0].author);
+                    payload.publisher = req.body.publisher || (resu[0] && resu[0].publisher);
+                    payload.pages = parseInt(req.body.pages) || (resu[0] && resu[0].pages);
+                    payload.description = req.body.description || (resu[0] && resu[0].description);
+                    payload.purchases = parseInt(req.body.purchases) || (resu[0] && resu[0].purchases);
 
-                    const result = await collection.updateOne({ isbn: isbn }, {
+                    const result = await collection.updateOne({ isbn: oldIsbn }, {
                         $set: payload
                     })
 
                     res.sendStatus(200)
-                    
+
 
                 } else {
-                    res.status(404).send("Libro non presente nel database!")
+                    res.status(400).send("Libro gia presente nel database!")
                 }
 
             } catch (e) {
@@ -146,32 +153,4 @@ exports.books = (app, client, database) => {
         }
     });
 
-    //ENDPOINT DI TIPO DELETE che elimina il documento dell'user che fa la richiesta
-    app.delete("/users/delete", async (req, res) => {
-        const authenticate = await auth.authentication(client, database, req);
-
-        if (authenticate === 200) {
-            //Una volta autenticato, non serve altro per iniziare la cancellazione
-
-            try {
-                const collection = await database.collection("data");
-
-                //Prendo email che mi dice dove cancellare, da header, non da body, perchè si puo cancellare solo il proprio account, non quello degli altri
-                const email = req.headers.email;
-
-                const result = await collection.deleteMany({ email: email });
-
-                if (result.deletedCount !== 0) {
-                    res.sendStatus(200);
-                } else {
-                    res.sendStatus(404);
-                }
-            } catch (error) {
-                console.log(error);
-                res.sendStatus(400);
-            }
-        } else {
-            res.status(401);
-        }
-    });
-};
+}

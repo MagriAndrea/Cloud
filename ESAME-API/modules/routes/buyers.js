@@ -2,8 +2,8 @@ exports.buyers = (app, client, database) => {
 
     const auth = require('../authentication');
 
-    //ENDPOINT GET che prende tutti i post
-    app.get("/buyers/get/:isbn", async (req, res) => {
+    //ENDPOINT GET che prende tutti i buyers di un libro
+    app.get("/books/get/:isbn/buyers", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req);
 
@@ -24,7 +24,14 @@ exports.buyers = (app, client, database) => {
 
                     if (result.length !== 0) {
 
-                        res.send(result[0].buyers)
+                        if (result[0].hasOwnProperty("buyers")) {
+
+                            res.send(result[0].buyers)
+
+                        } else {
+
+                            res.status(404).send("Questo libro non ha ancora registrato alcun acquirente")
+                        }
 
                     } else {
                         res.sendStatus(404)
@@ -48,7 +55,7 @@ exports.buyers = (app, client, database) => {
     });
 
     //ENDPOINT POST che aggiugne un singolo acquirente
-    app.post("/buyers/add/:isbn", async (req, res) => {
+    app.post("/books/add/:isbn/buyers", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
@@ -65,37 +72,42 @@ exports.buyers = (app, client, database) => {
 
                 const isbn = req.params.isbn
 
-                if (first_name && last_name && email && isbn) {
+                const checkIsbn = await collection.find({ isbn: isbn }).toArray()
 
-                    const checkEmail = await collection.find({'buyers.email':email}).toArray()
-                    
-                    console.log(checkEmail.length)
+                if (checkIsbn.length !== 0) {
 
-                    if (checkEmail.length == 0) {
+                    if (first_name && last_name && email) {
 
-                        const result = await collection.updateOne({ isbn: isbn }, {
-                            $push:
-                            {
-                                buyers: {
-                                    first_name: first_name,
-                                    last_name: last_name,
-                                    email: email
+                        const checkEmail = await collection.find({ 'buyers.email': email }).toArray()
+
+                        if (checkEmail.length == 0) {
+
+                            const result = await collection.updateOne({ isbn: isbn }, {
+                                $push:
+                                {
+                                    buyers: {
+                                        first_name: first_name,
+                                        last_name: last_name,
+                                        email: email
+                                    }
                                 }
                             }
-                        }
-                        )
+                            )
 
-                        res.sendStatus(200)
-                    
+                            res.sendStatus(200)
+
+                        } else {
+                            res.status(400).send("Email gia registrata, scegliene un altra")
+                        }
+
                     } else {
-                        res.status(400).send("Email gia registrata, scegliene un altra")
+
+                        res.status(400).send("Inserisci tutti i dati obbligatori")
                     }
 
                 } else {
-
-                    res.status(400).send("Inserisci tutti i dati obbligatori")
+                    res.status(400).send("Libro non presente nel database!")
                 }
-
 
             } catch (error) {
                 console.log(error)
@@ -110,52 +122,41 @@ exports.buyers = (app, client, database) => {
 
     })
 
-    //ENDPOINT DI TIPO PUT che aggiorna un post in base all'id
-    app.put("/posts/put/:id", async (req, res) => {
+    //ENDPOINT DELETE che cancella in base all'id passato come parametro
+    app.delete("/books/:isbn/delete/buyers/:email", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
-        //Controllo autenticazione
-        if (authenticate === 200) {
+        if (authenticate.status === 200 && authenticate.role === "rw") {
 
-            //Contollo che il parametro sia stato passato
-            if (req.params.id) {
+            const email = req.params.email
+
+            const isbn = req.params.isbn
+
+            if (email && isbn) {
 
                 try {
 
                     const collection = await database.collection("data")
 
-                    //GESTIONE DATI
-                    const email = req.headers.email
-                    const id = req.params.id
+                    const checkIsbn = await collection.find({ isbn: isbn }).toArray()
 
-                    const checkId = await collection.find({ email: email, 'posts.id': id }).toArray()
+                    if (checkIsbn.length !== 0) {
 
-                    //Se c'è l'id nel database
-                    if (checkId !== 0) {
+                        const checkEmail = await collection.find({ "buyers.email": email }).toArray()
 
-                        //Prendo i dati dal body
-                        const title = req.body.title
-                        const content = req.body.content
-
-                        //Se sono stati inseriti i dati nel body
-                        if (title && content) {
-
-                            //Per elementi composti basta metterli tra le virgolette
-                            const result = await collection.updateOne({ email: email, 'posts.id': id }, {
-                                $set: {
-                                    'posts.$.title': req.body.title, 'posts.$.content': req.body.content
-                                }
-                            });
+                        if (checkEmail.length !== 0) {
+                            //Filtro email e posts.id e tolgo ($pull) i posts che hanno tale id
+                            const result = await collection.updateOne({ "buyers.email": email }, { $pull: { buyers: { email: email } } })
 
                             res.sendStatus(200)
 
                         } else {
-                            res.status(400).send("Inserisci un titolo e un contenuto!")
+                            res.status(400).send("Email non trovata!")
                         }
 
                     } else {
-                        res.status(404).send("Id non trovato")
+                        res.status(400).send("Libro non presente nel database!")
                     }
 
                 } catch (error) {
@@ -164,49 +165,7 @@ exports.buyers = (app, client, database) => {
                 }
 
             } else {
-                res.status(400).send("Inserisci il parametro id")
-            }
-
-        } else {
-            res.sendStatus(401)
-        }
-
-    })
-
-    //ENDPOINT DELETE che cancella in base all'id passato come parametro
-    app.delete("/buyers/delete/:email", async (req, res) => {
-
-        const authenticate = await auth.authentication(client, database, req)
-
-        if (authenticate.status === 200 && authenticate.role==="rw") {
-
-            const email=req.params.email
-
-            if (email) {
-
-                try {
-
-                    const collection = await database.collection("data")
-
-                    const checkEmail = await collection.find({"buyers.email": email}).toArray()
-
-                    if (checkEmail.length !== 0) {
-                        //Filtro email e posts.id e tolgo ($pull) i posts che hanno tale id
-                        const result = await collection.updateOne({"buyers.email":email}, { $pull: { buyers: { email:email } } })
-
-                        res.sendStatus(200)
-
-                    } else {
-                        res.status(400).send("Email non trovata!")
-                    }
-
-                } catch (error) {
-                    console.log(error)
-                    res.sendStatus(400)
-                }
-
-            } else {
-                res.status(400).send("Specifica l'email!")
+                res.status(400).send("Inserisci i parametri necessari!")
             }
 
         } else {
