@@ -5,9 +5,11 @@ exports.authentication = async (client, database, req) => {
     require('dotenv').config()
 
     var status = 401
+    var role = "r"
+
     try {
         
-        const collection = await database.collection("data")
+        const collection = await database.collection("users")
         
         //Prendo il token e lo decodifico
         const token = req.headers.authorization.split(" ")[1];
@@ -17,7 +19,17 @@ exports.authentication = async (client, database, req) => {
             
         //Trovo se l'email nel payload è nel database
         const result = await collection.find({email:decoded.email}).toArray()
+        
 
+        if (result[0].email == req.headers.email) {
+            status = 200
+            role = decoded.role
+        } else {
+            //Nel caso il token non viene utilizzato dall'email che si è loggata
+            status = 401
+        }   
+        
+        //Aggiorno l'utilizzo
         const updateUsage = await collection.updateOne({ 
             email: req.headers.email},
             { $set: {
@@ -27,17 +39,12 @@ exports.authentication = async (client, database, req) => {
             }}
             });
         
-        if (result.length !== 0) {
-            status = 200
-        } else {
-            status = 401
-        }
-        
 
     } catch (e) {
 
         status = 401
     }
-    return status
+    
+    return {status:status, role:role}
 
 }

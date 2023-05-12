@@ -3,43 +3,35 @@ exports.buyers = (app, client, database) => {
     const auth = require('../authentication');
 
     //ENDPOINT GET che prende tutti i post
-    app.get("/posts/get", async (req, res) => {
+    app.get("/buyers/get/:isbn", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req);
 
-        if (authenticate === 200) {
+        if (authenticate.status === 200) {
 
             try {
 
                 const collection = await database.collection("data")
 
                 //GESTIONE DATI
-                //Gestione limit e order
 
-                //Con l'operatore ternario posso scrivere questa sintassi: se valore è stato passato, salvati il valore, altrimenti salvati quello di default
-                const limit = req.query.limit ? req.query.limit : 100;
-                
-                const order = req.query.order == "reverse" ? "reverse" : "default";
+                //Gestione isbn
+                const isbn = req.params.isbn
 
-                //Gestione email
-                const email = req.headers.email
+                if (isbn) {
 
+                    const result = await collection.find({ isbn: isbn }).toArray();
 
-                const result = await collection.find({email:email}).toArray();
+                    if (result.length !== 0) {
 
-                if (result !== 0) {
-                    
-                    //Vario i risultati in base all'order che mi è stato passato
-                    if (order == "default") {
-                        res.send(result[0].posts.slice(0, limit))
+                        res.send(result[0].buyers)
+
                     } else {
-                        res.send(result[0].posts.slice(0, limit).reverse())
+                        res.sendStatus(404)
                     }
 
-                //Non scrivo res.sendStatus() perchè nelle instruzione sopra viene gia ritornato qualcosa e lo status in automatico è 200
-
                 } else {
-                    res.sendStatus(404)
+                    res.status(400).send("Inserisci isbn come parametro!")
                 }
 
             } catch (error) {
@@ -55,93 +47,49 @@ exports.buyers = (app, client, database) => {
 
     });
 
-    //ENDPOINT GET che prende solo un post in base all id
-    app.get("/posts/get/:id", async (req, res) => {
+    //ENDPOINT POST che aggiugne un singolo acquirente
+    app.post("/buyers/add/:isbn", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
-        if (authenticate === 200) {
+        if (authenticate.status === 200 && authenticate.role == "rw") {
 
-            if (req.params.id) {
-
-                try {
-
-                    const collection = await database.collection("data");
-
-                    //GESTIONE DATI
-                    //Gestione id
-                    const id = req.params.id
-
-                    //Sintassi: "array" :{ $elemMatch :{chiave:valore}}
-                    //$elemMatch trova tra gli oggetti dell'array, quale oggetto ha un campo id = id
-                    const result = await collection.find({posts : { $elemMatch : {id:id} }}).toArray()
-
-                    if (result.length !== 0) {
-                        //Tra tutti i post di questo utente
-                        result[0].posts.forEach((post) => {
-                            //Se il post id è = a quello passato come parametro
-                            if (post.id === id) {
-                                res.send(post)
-                            }
-                            
-                        })
-
-                    } else {
-
-                        res.sendStatus(404)
-                    }
-
-                } catch (error) {
-                    console.log(error)
-                    res.sendStatus(400)
-                }
-
-            } else {
-                res.status(400).send("Inserisci tutti i campi!")
-            }
-
-        } else {
-            res.sendStatus(401)
-        }
-
-    })
-
-
-    //ENDPOINT POST che aggiugne un singolo post
-    app.post("/posts/add", async (req, res) => {
-        
-        //AUTENTICAZIONE
-        //Autentico il client che fa la richiesta per sapere a chi aggiungere il post
-        const authenticate = await auth.authentication(client, database, req)
-
-        if (authenticate === 200) {
-        
             try {
 
                 const collection = await database.collection("data")
 
                 //CONTROLLO DATI OBBLIGATORI
+                const first_name = req.body.first_name
+                const last_name = req.body.last_name
+                const email = req.body.email
 
-                if (req.body.title && req.body.content) {
+                const isbn = req.params.isbn
 
-                    //Prendo i dati necessari 
-                    const email = req.headers.email
+                if (first_name && last_name && email && isbn) {
 
-                    const title = req.body.title
-                    const content = req.body.content
+                    const checkEmail = await collection.find({'buyers.email':email}).toArray()
+                    
+                    console.log(checkEmail.length)
 
-                    //Genero un id random
-                    const randId = Math.floor(1 + Math.random()* 0x10000).toString(16)
+                    if (checkEmail.length == 0) {
 
-                    const result = await collection.updateOne({email:email}, {$push: 
-                        { posts: {
-                            id:randId,
-                            title:title,
-                            content:content
-                        }}}
-                    )
+                        const result = await collection.updateOne({ isbn: isbn }, {
+                            $push:
+                            {
+                                buyers: {
+                                    first_name: first_name,
+                                    last_name: last_name,
+                                    email: email
+                                }
+                            }
+                        }
+                        )
 
-                    res.sendStatus(200)
+                        res.sendStatus(200)
+                    
+                    } else {
+                        res.status(400).send("Email gia registrata, scegliene un altra")
+                    }
 
                 } else {
 
@@ -181,7 +129,7 @@ exports.buyers = (app, client, database) => {
                     const email = req.headers.email
                     const id = req.params.id
 
-                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
+                    const checkId = await collection.find({ email: email, 'posts.id': id }).toArray()
 
                     //Se c'è l'id nel database
                     if (checkId !== 0) {
@@ -192,10 +140,13 @@ exports.buyers = (app, client, database) => {
 
                         //Se sono stati inseriti i dati nel body
                         if (title && content) {
-                
+
                             //Per elementi composti basta metterli tra le virgolette
-                            const result = await collection.updateOne({email: email, 'posts.id':id}, { $set : {
-                                'posts.$.title': req.body.title, 'posts.$.content': req.body.content } });
+                            const result = await collection.updateOne({ email: email, 'posts.id': id }, {
+                                $set: {
+                                    'posts.$.title': req.body.title, 'posts.$.content': req.body.content
+                                }
+                            });
 
                             res.sendStatus(200)
 
@@ -223,34 +174,30 @@ exports.buyers = (app, client, database) => {
     })
 
     //ENDPOINT DELETE che cancella in base all'id passato come parametro
-    app.delete("/posts/delete/:id", async (req, res) => {
+    app.delete("/buyers/delete/:email", async (req, res) => {
 
         const authenticate = await auth.authentication(client, database, req)
 
-        if (authenticate === 200) {
+        if (authenticate.status === 200 && authenticate.role==="rw") {
 
-            //Controllo id
-            const id = req.params.id
+            const email=req.params.email
 
-            if (id) {
+            if (email) {
 
                 try {
 
                     const collection = await database.collection("data")
 
-                    //Gestione mail
-                    const email = req.headers.email
+                    const checkEmail = await collection.find({"buyers.email": email}).toArray()
 
-                    const checkId = await collection.find({email:email, 'posts.id':id}).toArray()
-
-                    if (checkId) {
+                    if (checkEmail.length !== 0) {
                         //Filtro email e posts.id e tolgo ($pull) i posts che hanno tale id
-                        const result = await collection.updateOne({email:email, 'posts.id':id}, { $pull : {posts :{id: id}} })
+                        const result = await collection.updateOne({"buyers.email":email}, { $pull: { buyers: { email:email } } })
 
                         res.sendStatus(200)
-                        
+
                     } else {
-                        res.status(400).send("Id non trovato!")
+                        res.status(400).send("Email non trovata!")
                     }
 
                 } catch (error) {
@@ -259,7 +206,7 @@ exports.buyers = (app, client, database) => {
                 }
 
             } else {
-                res.status(400).send("Specifica l'id!")
+                res.status(400).send("Specifica l'email!")
             }
 
         } else {
