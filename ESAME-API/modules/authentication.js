@@ -19,7 +19,6 @@ exports.authentication = async (client, database, req) => {
             
         //Trovo se l'email nel payload è nel database
         const result = await collection.find({email:decoded.email}).toArray()
-        
 
         if (result[0].email == req.headers.email) {
             status = 200

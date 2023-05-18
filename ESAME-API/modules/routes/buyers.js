@@ -21,20 +21,18 @@ exports.buyers = (app, client, database) => {
                 if (isbn) {
 
                     const result = await collection.find({ isbn: isbn }).toArray();
-
+                    //Se viene trovato il libro
                     if (result.length !== 0) {
-
-                        if (result[0].hasOwnProperty("buyers")) {
-
-                            res.send(result[0].buyers)
-
+                        
+                        //Controllo prima se esiste, se no, mi viene ritornato undefined
+                        if (result[0].buyers && result[0].buyers.length !== 0) {
+                            res.send(result[0].buyers);
                         } else {
-
-                            res.status(404).send("Questo libro non ha ancora registrato alcun acquirente")
+                            res.status(404).send("Questo libro non ha ancora registrato alcun acquirente!");
                         }
 
                     } else {
-                        res.sendStatus(404)
+                        res.status(404).send("Libro non trovato!")
                     }
 
                 } else {
