@@ -23,23 +23,27 @@ exports.login = async (app, client, database) => {
                     //Contorllo password
                     const bcrypt = require("bcrypt");
 
-                    const compareToken = await bcrypt.compare(
+                    const comparePassword = await bcrypt.compare(
                         password,
                         result[0].password
                     );
 
                     //Se la password è corretta
-                    if (compareToken) {
+                    if (comparePassword) {
                         //Controllo ruolo (rw = read and write, r = read)
                         const role = result[0].role === "admin" ? "rw" : "r";
 
                         //Non serve passare la password, è gia stato loggato, non serve più
                         //Basta cambiare il jwt-secret in modo da "sloggare" tutti gli utenti
-                        const token = jwt.sign({ email: email, role: role }, process.env.JWT_SECRET, {
+                        const token = jwt.sign({ email: email, role: role }, process.env.JWT_ACCESS_SECRET, {
+                            expiresIn: "1m",
+                        });
+
+                        const refreshToken = jwt.sign({ email: email, role: role }, process.env.JWT_REFRESH_SECRET, {
                             expiresIn: "24h",
                         });
 
-                        res.json({ token: token });
+                        res.json({ token: token, refreshToken: refreshToken });
                         
                     } else {
                         res.status(401).send("Password errata!")

@@ -20,7 +20,7 @@ const uri = "mongodb://127.0.0.1:27017"
 
 const client = new MongoClient(uri)
 
-const database = client.db("noleggio-film")
+const database = client.db("middle-ware")
 
 //Questi sono middleware
 app.use(express.json()) 
