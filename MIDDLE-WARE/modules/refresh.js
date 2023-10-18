@@ -12,7 +12,6 @@ exports.refresh = async (app, client, database) => {
             const refreshToken = req.body.refreshToken
 
             //CONTROLLI NEL DATABASE
-            //Trovo l'utente con tale email
             const result = await collection.find({ refreshToken: refreshToken }).toArray();
 
             //Se trovo il refreshToken
