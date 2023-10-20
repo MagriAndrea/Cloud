@@ -36,14 +36,25 @@ exports.login = async (app, client, database) => {
                         //Non serve passare la password, è gia stato loggato, non serve più
                         //Basta cambiare il jwt-secret in modo da "sloggare" tutti gli utenti
                         const token = jwt.sign({ email: email, role: role }, process.env.JWT_ACCESS_SECRET, {
-                            expiresIn: "1m",
+                            expiresIn: "1h",
                         });
 
                         const refreshToken = jwt.sign({ email: email, role: role }, process.env.JWT_REFRESH_SECRET, {
                             expiresIn: "24h",
                         });
 
-                        res.json({ token: token, refreshToken: refreshToken });
+                        res.cookie('refresh_token', refreshToken, {
+                            path: "/refresh", //Funziona solo nella path /refresh
+                            sameSite: "strict", //Utilizza solo sul mio sito
+                            httpOnly: true //Non puo essere utilizzato negli script
+                        })
+
+                        await collection.updateOne(
+                            {email: req.body.email}, 
+                            { $set: {refreshToken: refreshToken}}
+                            )
+
+                        res.json({token: token});
                         
                     } else {
                         res.status(401).send("Password errata!")
@@ -55,7 +66,8 @@ exports.login = async (app, client, database) => {
             } else {
                 res.status(400).send("Inserisci l'email e la password nel body");
             }
-        } catch (error) {
+        } catch (e) {
+            console.log(e)
             res.sendStatus(400);
         }
     });

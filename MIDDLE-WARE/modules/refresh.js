@@ -6,6 +6,7 @@ exports.refresh = async (app, client, database) => {
     require("dotenv").config();
 
     app.post("/refresh", async (req, res) => {
+
         try {
             const collection = await database.collection("users");
 
@@ -17,17 +18,28 @@ exports.refresh = async (app, client, database) => {
             //Se trovo il refreshToken
             if (result.length !== 0) {
 
-                const token = jwt.sign({ email: result[0].email, role: result[0].password }, process.env.JWT_ACCESS_SECRET, {
-                    expiresIn: "10m",
-                });
+                const verifiedToken = jwt.verify(result[0].refreshToken, process.env.JWT_REFRESH_SECRET)
 
-                res.json({ token: token });
+                //Se il token è valido
+                if (verifiedToken) {
+                    const token = jwt.sign({ email: result[0].email, role: result[0].password }, process.env.JWT_ACCESS_SECRET, {
+                        expiresIn: "1h",
+
+
+                    });
+
+                    res.json({ token: token });
+
+                } else {
+                    res.status(401).send("refresh-token scaduto, rifai il login!")
+                }
 
             } else {
                 res.status(401).send("refreshToken inesistente")
             }
 
-        } catch (error) {
+        } catch (e) {
+            console.log(e);
             res.sendStatus(400);
         }
     });

@@ -2,13 +2,15 @@ exports.routes = (app, client, database) => {
 
     //INCLUDO LE ROUTES
 
-    const filmsRoutes = require('./routes/films') //Richiamo i file
-    const rentersRoutes = require('./routes/renters')
+    const usersRoutes = require('./routes/users') //Richiamo i file
     const loginRoute = require("./login")
+    const logoutRoute = require("./logout")
+    const refershRoutes = require("./refresh")
 
     //INIZIALIZZO LE ROUTES
 
-    filmsRoutes.films(app, client, database) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
-    rentersRoutes.renters(app, client, database)
+    usersRoutes.users(app, client, database) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
     loginRoute.login(app, client, database)
+    refershRoutes.refresh(app, client, database)
+    logoutRoute.logout(app, client, database)
 }

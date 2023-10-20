@@ -8,6 +8,8 @@ const { MongoClient } = require("mongodb")
 
 const routes = require('./modules/routes') //richiamo di routes.js
 
+const cookieParser = require('cookie-parser')
+
 //INIZZIALIZZO EXPRESS E ABILITO LE CORS
 
 const app = express()
@@ -25,6 +27,7 @@ const database = client.db("middle-ware")
 //Questi sono middleware
 app.use(express.json()) 
 app.use(express.urlencoded({extended:true})) //Permette in postman di passare i parametri checkando x-www-form-urlencoded
+app.use(cookieParser())
 
 //AVVIO L'APP SU PORTA 4000
 

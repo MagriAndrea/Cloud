@@ -17,11 +17,11 @@ exports.authentication = async (client, database, req) => {
         const token = req.headers.authorization.split(" ")[1];
        
         //decoded contiene il payload decodificato del jwt token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
             
         //Trovo se l'email nel payload è nel database
         const result = await collection.find({email:decoded.email}).toArray()
-
+        
         if (result[0].email == req.headers.email) {
             status = 200
             role = decoded.role
@@ -45,6 +45,8 @@ exports.authentication = async (client, database, req) => {
         console.log(e)
         status = 401
     }
+
+    console.log("DEBUG", "autenticazione:", {status:status, role:role})
     
     return {status:status, role:role}
 
