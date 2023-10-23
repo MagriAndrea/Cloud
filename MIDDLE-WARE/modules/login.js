@@ -7,7 +7,7 @@ exports.login = async (app, client, database) => {
 
     app.post("/login", async (req, res) => {
         try {
-            //Prendo dati dal bod
+            //Prendo dati dal body
             const email = req.body.email;
             const password = req.body.password;
 
