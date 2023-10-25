@@ -30,8 +30,8 @@ exports.login = async (app, client, database) => {
 
                     //Se la password è corretta
                     if (comparePassword) {
-                        //Controllo ruolo (rw = read and write, r = read)
-                        const role = result[0].role === "admin" ? "rw" : "r";
+                        //Perndo ruolo
+                        const role = result[0].role
 
                         //Non serve passare la password, è gia stato loggato, non serve più
                         //Basta cambiare il jwt-secret in modo da "sloggare" tutti gli utenti

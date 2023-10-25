@@ -1,53 +1,24 @@
-//AUTHENTICATION SERVE PER VERIFICARE SE IL JWT TOKEN CONTIENE
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
+exports.authenticate = async (req, res, next) => {
 
-exports.authentication = async (client, database, req) => {
+    const token = req.headers.authorization.split(" ")[1]
     
-    const jwt = require('jsonwebtoken');
-    //Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
-    require('dotenv').config()
-
-    var status = 401
-    var role = "r"
-
-    try {
-        
-        const collection = await database.collection("users")
-        
-        //Prendo il token e lo decodifico
-        const token = req.headers.authorization.split(" ")[1];
-       
-        //decoded contiene il payload decodificato del jwt token
-        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-            
-        //Trovo se l'email nel payload è nel database
-        const result = await collection.find({email:decoded.email}).toArray()
-        
-        if (result[0].email == req.headers.email) {
-            status = 200
-            role = decoded.role
-        } else {
-            //Nel caso il token non viene utilizzato dall'email che si è loggata
-            status = 401
-        }   
-        
-        //Aggiorno l'utilizzo
-        const updateUsage = await collection.updateOne({ 
-            email: req.headers.email},
-            { $set: {
-                usage: {
-                latestRequestDate: new Date().toLocaleDateString(),
-                numberOfRequests: result[0].usage.numberOfRequests + 1 
-            }}
-            });
-        
-
-    } catch (e) {
-        console.log(e)
-        status = 401
+    if (!token) {
+        res.status(401).send("token di autenticazione mancante")
     }
-
-    console.log("DEBUG", "autenticazione:", {status:status, role:role})
     
-    return {status:status, role:role}
+    //jwt.verify accetta come parametri, un token, un jwt_secret e una funzione di callback, in cui sa che nel primo campo
+    //deve mettere l'errore e nel secondo campo il payload
+    jwt.verify(token, process.env.JWT_ACCESS_SECRET, async (err, payload) => {
+        if (err) {
+            console.log(err)
+            return res.sendStatus(403) //serve per bloccare l'esecuzione di jwt.verify, questo per evitare possibili errori. è uguale a scrivere res.sendS... e sotto return
+        }
+
+        req.user = payload //Metto il payload dentro la proprietà user di request, in modo da poterla usare dopo nella funzione async
+        
+        next() //Questo esegue la funzione async che ho definito dopo auth.authenticate
+    })
 
 }
