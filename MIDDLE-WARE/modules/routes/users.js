@@ -1,8 +1,6 @@
 const {getUsers, createUser} = require("../../controllers/userController")
-const mongoose = require('mongoose');
-const {app} = require("../../index")
 
-exports.users = () => {
+exports.users = (app) => {
 
     const auth = require('../authentication');
 

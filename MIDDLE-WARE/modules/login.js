@@ -1,7 +1,8 @@
 //LOGIN SERVE SOLO PER OTTENERE IL JWT TOKEN CHE POI USERO PER OGNI RICHIESTA
-const {app} = require("../index")
 
-exports.login = async () => {
+const { User } = require("../models/userModel")
+
+exports.login = async (app) => {
     const jwt = require("jsonwebtoken");
     //Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
     require("dotenv").config();
@@ -13,26 +14,23 @@ exports.login = async () => {
             const password = req.body.password;
 
             if (email && password) {
-                const collection = await database.collection("users");
-
-                //CONTROLLI NEL DATABASE
-                //Trovo l'utente con tale email
-                const result = await collection.find({ email: email }).toArray();
-
+            
+                result = await User.findOne({ email: email })
+            
                 //Se trovo l'utente
-                if (result.length !== 0) {
+                if (result) {
                     //Contorllo password
                     const bcrypt = require("bcrypt");
 
                     const comparePassword = await bcrypt.compare(
                         password,
-                        result[0].password
+                        result.password
                     );
 
                     //Se la password è corretta
                     if (comparePassword) {
                         //Perndo ruolo
-                        const role = result[0].role
+                        const role = result.role
 
                         //Non serve passare la password, è gia stato loggato, non serve più
                         //Basta cambiare il jwt-secret in modo da "sloggare" tutti gli utenti
@@ -50,13 +48,13 @@ exports.login = async () => {
                             httpOnly: true //Non puo essere utilizzato negli script
                         })
 
-                        await collection.updateOne(
-                            {email: req.body.email}, 
-                            { $set: {refreshToken: refreshToken}}
-                            )
+                        await User.updateOne(
+                            { email: email },
+                            { $set: { refreshToken: refreshToken } }
+                        )
 
-                        res.json({token: token});
-                        
+                        res.json({ token: token });
+
                     } else {
                         res.status(401).send("Password errata!")
                     }

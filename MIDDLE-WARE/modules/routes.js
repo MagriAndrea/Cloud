@@ -1,4 +1,4 @@
-exports.routes = (app, client, database) => {
+exports.routes = (app) => {
 
     //INCLUDO LE ROUTES
 

@@ -1,10 +1,7 @@
 //RICHIAMO I MODULI NECESSARI (LI CARICO IN MEMORIA)
 const express = require("express");
-
 const cors = require("cors")
-
 const routes = require('./modules/routes') //richiamo di routes.js
-
 const cookieParser = require('cookie-parser')
 
 //INIZZIALIZZO EXPRESS E ABILITO LE CORS
@@ -22,11 +19,9 @@ app.use(express.urlencoded({extended:true})) //Permette in postman di passare i 
 app.use(cookieParser())
 
 //AVVIO L'APP SU PORTA 4000
-
 app.listen(4000, () => {
     console.log("Il server è avviato su porta 4000")
 })
 
 //AGGIUNGO GLI ENDPOINT
-
 routes.routes(app); //routes è il file, .routes è la funzione

@@ -61,4 +61,21 @@ exports.createUser = async (req, res) => {
 
 }
 
-exports.getUsers = async (req, res) => {}
+exports.getUsers = async (req, res) => {
+
+    try {
+        const result = await User.find({})
+        
+        if (result.length !== 0) {
+            res.send(result)
+        } else {
+            //Se il risultato è vuoto
+            res.sendStatus(404)
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400);
+    }
+
+}
