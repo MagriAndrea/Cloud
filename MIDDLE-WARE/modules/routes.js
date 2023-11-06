@@ -9,8 +9,8 @@ exports.routes = (app, client, database) => {
 
     //INIZIALIZZO LE ROUTES
 
-    usersRoutes.users(app, client, database) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
-    loginRoute.login(app, client, database)
-    refershRoutes.refresh(app, client, database)
-    logoutRoute.logout(app, client, database)
+    usersRoutes.users(app) //userRoutes è il file che ho richiamato, .users è la funzione che ho dichiarato in users.js
+    loginRoute.login(app)
+    refershRoutes.refresh(app)
+    logoutRoute.logout(app)
 }

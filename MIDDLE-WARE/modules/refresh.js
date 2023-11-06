@@ -1,16 +1,17 @@
 //LOGIN SERVE SOLO PER OTTENERE IL JWT TOKEN CHE POI USERO PER OGNI RICHIESTA
 
-exports.refresh = async (app, client, database) => {
+exports.refresh = async (app, database) => {
     const jwt = require("jsonwebtoken");
     //Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
     require("dotenv").config();
 
-    app.post("/refresh", async (req, res) => {
+    app.get("/refresh", async (req, res) => {
 
         try {
-            const collection = await database.collection("users");
 
-            const refreshToken = req.body.refreshToken
+            const collection = database.collection('users');
+
+            const refreshToken = req.cookies.refreshToken
 
             //CONTROLLI NEL DATABASE
             const result = await collection.find({ refreshToken: refreshToken }).toArray();

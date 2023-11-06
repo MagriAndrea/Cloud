@@ -1,6 +1,7 @@
 //LOGIN SERVE SOLO PER OTTENERE IL JWT TOKEN CHE POI USERO PER OGNI RICHIESTA
+const {app} = require("../index")
 
-exports.login = async (app, client, database) => {
+exports.login = async () => {
     const jwt = require("jsonwebtoken");
     //Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
     require("dotenv").config();

@@ -1,28 +1,20 @@
 //RICHIAMO I MODULI NECESSARI (LI CARICO IN MEMORIA)
-
 const express = require("express");
 
 const cors = require("cors")
-
-const { MongoClient } = require("mongodb")
 
 const routes = require('./modules/routes') //richiamo di routes.js
 
 const cookieParser = require('cookie-parser')
 
 //INIZZIALIZZO EXPRESS E ABILITO LE CORS
-
 const app = express()
-
+exports.app = app
 app.use(cors())
 
-// CONNETTO AL DATABASE
-
-const uri = "mongodb://127.0.0.1:27017"
-
-const client = new MongoClient(uri)
-
-const database = client.db("middle-ware")
+// CONNETTO AL DATABASE con mongoose
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/middle-ware', {useNewUrlParser: true, useUnifiedTopology: true})
 
 //Questi sono middleware
 app.use(express.json()) 
@@ -37,4 +29,4 @@ app.listen(4000, () => {
 
 //AGGIUNGO GLI ENDPOINT
 
-routes.routes(app, client, database); //routes è il file, .routes è la funzione
+routes.routes(app); //routes è il file, .routes è la funzione

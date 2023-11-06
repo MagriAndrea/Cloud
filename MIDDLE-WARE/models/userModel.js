@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+const {Schema, model} = require("mongoose")
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     email : {type: String, required: true, unique:true},
     password : {type: String, required:true},
     role : {type: String, required:true},
@@ -10,5 +10,8 @@ const userSchema = new mongoose.Schema({
       }
 })
 
-const user = mongoose.model("user", userSchema)
+const User = model("user", userSchema);
 
+//ESPORTA USER NON LE FUNZIONI!!
+
+exports.User = User

@@ -1,41 +1,14 @@
-exports.users = (app, client, database) => {
+const {getUsers, createUser} = require("../../controllers/userController")
+const mongoose = require('mongoose');
+const {app} = require("../../index")
+
+exports.users = () => {
 
     const auth = require('../authentication');
 
     //ENDPOINT DI TIPO GET che ritorna tutti gli user
-    app.get('/users/get', auth.authenticate, async (req, res) => {
+    app.get('/users/get', auth.authenticate, getUsers);
 
-        console.log(req.user.role)
-
-        try {
-
-            const collection = database.collection('users');
-
-            const result = await collection.find({}).toArray();
-
-            //Di conseguenza result è un array di oggeti, posso facilmente vedere se il contenuto è maggiore di 0 verificando la proprietà .length
-            if (result.length !== 0) {
-
-                //Se c'è qualcosa dentro il risultato, lo ritorno al chiamante dell'endpoint
-                res.send(result);
-
-            } else {
-
-                //Altrimenti gli ritorno un errore 404 cioè che non è stato trovato niente
-                res.sendStatus(404);
-
-            }
-
-        } catch (error) { //Se c'è qualche errore vuol dire che il client ha fatto una richiesta sbagliata
-
-            console.log(error)
-
-            //400 = bad request
-            res.sendStatus(400);
-
-        }
-
-    });
 
     //ENDPOINT DI TIPO GET che ritorna un user in base all'email passata
     app.get("/users/get/:email", auth.authenticate, async (req, res) => { //Viene passato il riferimento a 
@@ -65,71 +38,7 @@ exports.users = (app, client, database) => {
     })
 
     // //ENDPOINT POST che permette di aggiungere un user al database
-    app.post("/users/add", auth.authenticate, async (req, res) => {
-
-        if (req.user.role == "admin") {
-
-            try {
-                //Guardo se sono stati inseriti i campi obbligatori
-                if (req.body.email && req.body.password && req.body.role) {
-
-                    //Prendo la collection dal database
-                    const collection = await database.collection("users");
-
-                    //GESTIONE EMAIL
-                    //L'email deve essere univoca
-                    const checkUser = await collection.find({ email: req.body.email }).toArray();
-
-                    if (checkUser.length == 0) {
-
-                        //GESTIONE PASSWORD
-                        //Trasformo la passowrd in chiaro in password hashata con bcrypt
-                        const bcrypt = require("bcrypt")
-                        const saltRounds = 10
-
-                        //Metto nella variabile la password hashata
-                        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-
-                        //GESTIONE RUOLO
-                        //Ruoli: admin o user;  se il ruolo è admin, admin, altrimenti qualunque altro ruolo inserito diventa user
-                        //Uso l'operatore ternario perchè il codice è più pulito (non devo scrivere let ruolo, e poi un if che ne cambia il valori)
-                        const role = req.body.role == "admin" ? "admin" : "user";
-
-                        //Creo l'oggetto che poi inserisco dentro il database
-                        const userData = {
-                            email: req.body.email,
-                            password: hashedPassword,
-                            role: role,
-                            usage: {
-                                lastRequest: new Date().toLocaleDateString(),
-                                numberOfRequests: 1
-                            }
-                        }
-
-                        //Se tutto va bene allora inserisco il dato nel database
-                        const result = await collection.insertOne({ email: userData.email, password: userData.password, role: userData.role, usage: userData.usage })
-
-                        res.sendStatus(200);
-
-                    } else {
-                        res.status(400).send("Email gia registrata, scegliene un'altra!")
-                    }
-
-                } else {
-                    res.status(400).send("Inserisci tutti i campi obbligatori!")
-                }
-
-            } catch (error) {
-                console.log(error)
-
-                res.sendStatus(400).send("Problemi con la richiesta")
-            }
-
-        } else {
-            res.status(401).send("Non hai il permesso di usare questo endpoint")
-        }
-
-    })
+    app.post("/users/add", auth.authenticate, createUser)
 
     //ENDPOINT DI TIPO PUT che aggiorna un documento in base a cosa è stato passato nell'header
     app.put("/users/update", auth.authenticate, async (req, res) => {
