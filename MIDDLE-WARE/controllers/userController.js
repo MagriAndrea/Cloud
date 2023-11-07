@@ -1,6 +1,47 @@
-const {User} = require("../models/userModel")
+const { User } = require("../models/userModel")
+
+
+exports.getUsers = async (req, res) => {
+
+    try {
+        const result = await User.find({})
+
+        if (result.length !== 0) {
+            res.send(result)
+        } else {
+            //Se il risultato è vuoto
+            res.sendStatus(404)
+        }
+
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400);
+    }
+
+}
+
+exports.getUserByEmail = async (req, res) => {
+
+    try {
+        const result = await User.findOne({ email: req.params.email })
+
+        if (result) {
+            res.send(result)
+        } else {
+            //Se il risultato è vuoto
+            res.sendStatus(404)
+        }
+
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400);
+    }
+
+}
 
 exports.createUser = async (req, res) => {
+
+    console.log("DEBUG:", "Chiamata funzione createUser")
 
     if (req.user.role == "admin") {
 
@@ -8,9 +49,9 @@ exports.createUser = async (req, res) => {
             //Guardo se sono stati inseriti i campi obbligatori
             if (req.body.email && req.body.password && req.body.role) {
 
-                const checkUser = await getUser({email: req.params.email})
+                const checkUser = await User.findOne({ email: req.params.email })
 
-                if (checkUser.length != 0) {
+                if (checkUser) {
 
                     //GESTIONE PASSWORD
                     //Trasformo la passowrd in chiaro in password hashata con bcrypt
@@ -37,9 +78,11 @@ exports.createUser = async (req, res) => {
                     }
 
                     //Se tutto va bene allora inserisco il dato nel database
-                    createUser(userData)
+                    await User.save(userData)
 
                     res.sendStatus(200);
+
+                    console.log("DEBUG:", "createUser eseguita senza problemi")
 
                 } else {
                     res.status(400).send("Email gia registrata, scegliene un'altra!")
@@ -61,21 +104,56 @@ exports.createUser = async (req, res) => {
 
 }
 
-exports.getUsers = async (req, res) => {
+exports.updateUser = async (req, res) => {
 
-    try {
-        const result = await User.find({})
-        
-        if (result.length !== 0) {
-            res.send(result)
+    console.log("DEBUG:","chiamata funzione updateUser")
+
+    if (req.user.role == "admin") {
+
+        if (req.body.email && req.body.password && req.body.role) {
+
+            try {
+
+                //CONTROLLO UNIVOCITA' EMAIL DA INSERIRE
+                const email = req.body.email
+                const checkUser = await User.findOne({ email: email })
+
+                if (checkUser) {
+
+                    //GESTIONE PASSWORD
+                    const bcrypt = require("bcrypt")
+                    const saltRounds = 10
+                    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+
+                    //GESTIONE RUOLO
+                    const role = req.body.role == "admin" ? "admin" : "user"
+
+                    //Modifico dati del database
+                    await User.updateOne(
+                        { email: req.query.email },
+                        { $set: { email: email, password: hashedPassword, role: role } }
+                    )
+
+                    res.sendStatus(200)
+
+                    console.log("DEBUG:","updateUser eseguita senza problemi")
+
+                } else {
+                    res.status(400).send("Email gia registrata, prova con un altra!")
+                }
+
+            } catch (error) {
+                console.log(error)
+                res.sendStatus(400)
+            }
+
         } else {
-            //Se il risultato è vuoto
-            res.sendStatus(404)
+            res.status(400).send("Inserisci tutti i campi obbligatori!")
         }
 
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(400);
+    } else {
+        res.status(401).send("Non hai il permesso di usare questo endpoint")
     }
+
 
 }
