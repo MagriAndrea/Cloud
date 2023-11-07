@@ -1,3 +1,4 @@
+//SERVE SOLO PER CREARE LE PASSWORD CRIPTATE QUANDO HO IL DATABASE VUOTO
 const bcrypt = require("bcrypt")
 const salt = 10
 

@@ -1,6 +1,5 @@
 const { User } = require("../models/userModel")
 
-
 exports.getUsers = async (req, res) => {
 
     try {
@@ -49,9 +48,9 @@ exports.createUser = async (req, res) => {
             //Guardo se sono stati inseriti i campi obbligatori
             if (req.body.email && req.body.password && req.body.role) {
 
-                const checkUser = await User.findOne({ email: req.params.email })
-
-                if (checkUser) {
+                const checkUser = await User.findOne({ email: req.body.email })
+                
+                if (!checkUser) {
 
                     //GESTIONE PASSWORD
                     //Trasformo la passowrd in chiaro in password hashata con bcrypt
@@ -78,7 +77,7 @@ exports.createUser = async (req, res) => {
                     }
 
                     //Se tutto va bene allora inserisco il dato nel database
-                    await User.save(userData)
+                    await User.create(userData)
 
                     res.sendStatus(200);
 
@@ -94,8 +93,7 @@ exports.createUser = async (req, res) => {
 
         } catch (error) {
             console.log(error)
-
-            res.sendStatus(400).send("Problemi con la richiesta")
+            res.sendStatus(400)
         }
 
     } else {
@@ -106,7 +104,7 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
 
-    console.log("DEBUG:","chiamata funzione updateUser")
+    console.log("DEBUG:", "chiamata funzione updateUser")
 
     if (req.user.role == "admin") {
 
@@ -130,13 +128,13 @@ exports.updateUser = async (req, res) => {
 
                     //Modifico dati del database
                     await User.updateOne(
-                        { email: req.query.email },
+                        { email: req.params.email },
                         { $set: { email: email, password: hashedPassword, role: role } }
                     )
 
                     res.sendStatus(200)
 
-                    console.log("DEBUG:","updateUser eseguita senza problemi")
+                    console.log("DEBUG:", "updateUser eseguita senza problemi")
 
                 } else {
                     res.status(400).send("Email gia registrata, prova con un altra!")
@@ -149,6 +147,39 @@ exports.updateUser = async (req, res) => {
 
         } else {
             res.status(400).send("Inserisci tutti i campi obbligatori!")
+        }
+
+    } else {
+        res.status(401).send("Non hai il permesso di usare questo endpoint")
+    }
+
+
+}
+
+exports.deleteUser = async (req, res) => {
+
+    console.log("DEBUG:", "chiamata funzione deleteUser")
+
+    if (req.user.role == "admin") {
+
+        try {
+
+            //Prendo email che mi dice dove cancellare
+            const email = req.params.email
+
+            const result = await User.deleteMany({ email: email })
+
+            if (result.deletedCount !== 0) {
+                res.sendStatus(200)
+                console.log("DEBUG:", "deleteUser eseguita senza problemi")
+            } else {
+                res.sendStatus(404)
+            }
+
+
+        } catch (error) {
+            console.log(error)
+            res.sendStatus(400)
         }
 
     } else {

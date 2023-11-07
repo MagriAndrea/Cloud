@@ -1,11 +1,11 @@
 //LOGIN SERVE SOLO PER OTTENERE IL JWT TOKEN CHE POI USERO PER OGNI RICHIESTA
 
 const { User } = require("../models/userModel")
+const jwt = require("jsonwebtoken");
+//Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
+require("dotenv").config();
 
 exports.login = async (app) => {
-    const jwt = require("jsonwebtoken");
-    //Carica il contenuto di .env (il file di questo progetto) nella proprietà process.env
-    require("dotenv").config();
 
     app.post("/login", async (req, res) => {
         try {
@@ -14,9 +14,9 @@ exports.login = async (app) => {
             const password = req.body.password;
 
             if (email && password) {
-            
-                result = await User.findOne({ email: email })
-            
+
+                const result = await User.findOne({ email: email })
+
                 //Se trovo l'utente
                 if (result) {
                     //Contorllo password
@@ -48,12 +48,15 @@ exports.login = async (app) => {
                             httpOnly: true //Non puo essere utilizzato negli script
                         })
 
-                        await User.updateOne(
-                            { email: email },
-                            { $set: { refreshToken: refreshToken } }
-                        )
+                        console.log(email, refreshToken)
+
+                        const aaa = await User.findOneAndUpdate({ email: email }, { refreshToken: refreshToken }, { new: true })
+
+                        console.log(aaa)
 
                         res.json({ token: token });
+
+                        console.log("DEBUG:", "login avvenuto con successo")
 
                     } else {
                         res.status(401).send("Password errata!")

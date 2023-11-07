@@ -1,4 +1,4 @@
-const {getUsers, createUser, getUserByEmail, updateUser} = require("../../controllers/userController")
+const {getUsers, createUser, getUserByEmail, updateUser, deleteUser} = require("../../controllers/userController")
 
 exports.users = (app) => {
 
@@ -17,37 +17,7 @@ exports.users = (app) => {
     app.put("/users/update/:email", auth.authenticate, updateUser)
 
     //ENDPOINT DI TIPO DELETE che elimina il documento dell'user che fa la richiesta
-    app.delete("/users/delete/:email", auth.authenticate, async (req, res) => {
-
-        if (req.user.role == "admin") {
-
-            try {
-
-                const collection = await database.collection("users")
-
-                //Prendo email che mi dice dove cancellare, da header, non da body, perchè si puo cancellare solo il proprio account, non quello degli altri
-                const email = req.params.email
-
-                const result = await collection.deleteMany({ email: email })
-
-                if (result.deletedCount !== 0) {
-                    res.sendStatus(200)
-                } else {
-                    res.sendStatus(404)
-                }
-
-
-            } catch (error) {
-                console.log(error)
-                res.sendStatus(400)
-            }
-
-        } else {
-            res.status(401).send("Non hai il permesso di usare questo endpoint")
-        }
-
-
-    })
+    app.delete("/users/delete/:email", auth.authenticate, deleteUser)
 
 
 }
