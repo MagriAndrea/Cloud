@@ -2,30 +2,21 @@ const { User } = require("../models/userModel")
 
 exports.getUsers = async (req, res) => {
 
-    try {
-        const result = await User.find({})
+    console.log("DEBUG:", "Chiamata funzione getUsers")
 
-        if (result.length !== 0) {
-            res.send(result)
+    try {
+        let result = ""
+        //Se viene passata l'email da cercare
+        if (req.params.email) {
+            result = await User.findOne({ email: req.params.email }, {password : 0}) //{password : 0} fa in modo che il campo password sia nascosto
+        //Se non viene passata l'email da cercare
         } else {
-            //Se il risultato è vuoto
-            res.sendStatus(404)
+            result = await User.find({}, {password : 0})
         }
 
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(400);
-    }
-
-}
-
-exports.getUserByEmail = async (req, res) => {
-
-    try {
-        const result = await User.findOne({ email: req.params.email })
-
-        if (result) {
+        if (result.length != 0) {
             res.send(result)
+            console.log("DEBUG:", "getUsers eseguita senza problemi")
         } else {
             //Se il risultato è vuoto
             res.sendStatus(404)
@@ -49,7 +40,7 @@ exports.createUser = async (req, res) => {
             if (req.body.email && req.body.password && req.body.role) {
 
                 const checkUser = await User.findOne({ email: req.body.email })
-                
+
                 if (!checkUser) {
 
                     //GESTIONE PASSWORD
@@ -71,7 +62,7 @@ exports.createUser = async (req, res) => {
                         password: hashedPassword,
                         role: role,
                         usage: {
-                            lastRequest: new Date().toLocaleDateString(),
+                            latestRequestDate: new Date().toLocaleDateString(),
                             numberOfRequests: 1
                         }
                     }
@@ -106,54 +97,77 @@ exports.updateUser = async (req, res) => {
 
     console.log("DEBUG:", "chiamata funzione updateUser")
 
-    if (req.user.role == "admin") {
+    const password = req.body.password
 
-        if (req.body.email && req.body.password && req.body.role) {
+    if (password) {
 
-            try {
+        try {
+            //GESTIONE PASSWORD
+            const bcrypt = require("bcrypt")
+            const saltRounds = 10
+            const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
 
-                //CONTROLLO UNIVOCITA' EMAIL DA INSERIRE
-                const email = req.body.email
-                const checkUser = await User.findOne({ email: email })
+            //Nel caso sia un admin
+            if (req.user.role === "admin") {
 
-                if (checkUser) {
+                const newEmail = req.body.email
+                const oldEmail = req.params.email
 
-                    //GESTIONE PASSWORD
-                    const bcrypt = require("bcrypt")
-                    const saltRounds = 10
-                    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+                //GESTIONE RUOLO
+                const role = req.body.role == "admin" ? "admin" : "user"
 
-                    //GESTIONE RUOLO
-                    const role = req.body.role == "admin" ? "admin" : "user"
+                //Se sono presenti anche gli altri dati
+                if (newEmail && oldEmail) {
 
-                    //Modifico dati del database
-                    await User.updateOne(
-                        { email: req.params.email },
-                        { $set: { email: email, password: hashedPassword, role: role } }
-                    )
+                    //CONTROLLO UNIVOCITA' NUOVA EMAIL DA INSERIRE
+                    const checkNewEmail = await User.findOne({ email: newEmail })
 
-                    res.sendStatus(200)
+                    //Se la nuova email non è gia registrata
+                    if (!checkNewEmail) {
 
-                    console.log("DEBUG:", "updateUser eseguita senza problemi")
+                        const checkOldEmail = await User.findOne({ email: oldEmail })
+                        //Se c'è un email da modificare
+                        if (checkOldEmail) {
 
+                            //Allora aggiorno
+                            await User.updateOne(
+                                { email: req.params.email },
+                                { $set: { email: newEmail, password: hashedPassword, role: role } }
+                            )
+
+                            res.sendStatus(200)
+
+                            console.log("DEBUG:", "updateUser di admin eseguita senza problemi")
+
+                        } else {
+                            res.status(400).send("Email da modificare non trovata")
+                        }
+                    } else {
+                        res.status(400).send("Email gia presente nel database")
+                    }
                 } else {
-                    res.status(400).send("Email gia registrata, prova con un altra!")
+                    res.status(400).send("Inserisci manca una email, o nuova o vecchia")
                 }
 
-            } catch (error) {
-                console.log(error)
-                res.sendStatus(400)
+                //Nel caso sia un user
+            } else {
+
+                await User.updateOne(
+                    { email: req.user.email },
+                    { $set: { password: hashedPassword } }
+                )
+
+                res.sendStatus(200)
+
+                console.log("DEBUG:", "updateUser di user eseguita senza problemi")
             }
-
-        } else {
-            res.status(400).send("Inserisci tutti i campi obbligatori!")
+        } catch (e) {
+            console.log(e)
+            res.sendStatus(400)
         }
-
     } else {
-        res.status(401).send("Non hai il permesso di usare questo endpoint")
+        res.status(400).send("Inserisci la nuova password")
     }
-
-
 }
 
 exports.deleteUser = async (req, res) => {

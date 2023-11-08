@@ -9,7 +9,7 @@ exports.logout = async (app) => {
     app.post("/logout", async (req, res) => {
         
         try {
-            const refreshToken = req.cookies.refreshToken
+            const refreshToken = req.cookies.refresh_token
 
             if (refreshToken) {
 
@@ -29,10 +29,10 @@ exports.logout = async (app) => {
                     console.log("DEBUG:","logout avvenuto con successo")
                     
                 } else {
-                    res.status(404).send("refresh-token non presente nel database");
+                    res.status(404).send("refreshToken non presente nel database");
                 }
             } else {
-                res.status(400).send("refresh-token non presente nei cookie");
+                res.status(400).send("refresh_token non presente nei cookie");
             }
         } catch (e) {
             console.log(e)

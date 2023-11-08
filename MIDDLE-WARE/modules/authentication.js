@@ -38,6 +38,7 @@ exports.authenticate = async (req, res, next) => {
                 numberOfRequests: result.usage.numberOfRequests + 1 
             }}
             });
+            
         } catch (e) {
             console.log(e)
             res.sendStatus(400)

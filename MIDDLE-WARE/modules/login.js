@@ -42,17 +42,23 @@ exports.login = async (app) => {
                             expiresIn: "24h",
                         });
 
+                        //Creo due cookie per non complicare la situazione
                         res.cookie('refresh_token', refreshToken, {
                             path: "/refresh", //Funziona solo nella path /refresh
                             sameSite: "strict", //Utilizza solo sul mio sito
                             httpOnly: true //Non puo essere utilizzato negli script
                         })
+                        res.cookie('refresh_token', refreshToken, {
+                            path: "/logout", //Funziona solo nella path /refresh
+                            sameSite: "strict", //Utilizza solo sul mio sito
+                            httpOnly: true //Non puo essere utilizzato negli script
+                        })
 
-                        console.log(email, refreshToken)
-
-                        const aaa = await User.findOneAndUpdate({ email: email }, { refreshToken: refreshToken }, { new: true })
-
-                        console.log(aaa)
+                        const aaa = await User.findOneAndUpdate(
+                            { email: email },
+                            { $set: { refreshToken: refreshToken } },
+                            { useFindAndModify: false, new: true }
+                        )
 
                         res.json({ token: token });
 

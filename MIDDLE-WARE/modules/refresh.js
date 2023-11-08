@@ -10,7 +10,7 @@ exports.refresh = async (app) => {
     app.get("/refresh", async (req, res) => {
 
         try {
-            const refreshToken = req.cookies.refreshToken
+            const refreshToken = req.cookies.refresh_token
 
             //CONTROLLI NEL DATABASE
             const result = await User.findOne({ refreshToken: refreshToken })
@@ -35,7 +35,7 @@ exports.refresh = async (app) => {
                 }
 
             } else {
-                res.status(401).send("refreshToken inesistente")
+                res.status(400).send("refreshToken inesistente")
             }
 
         } catch (e) {
