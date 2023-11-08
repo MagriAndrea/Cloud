@@ -7,7 +7,7 @@ exports.users = (app) => {
     //ENDPOINT DI TIPO GET che ritorna un user in base all'email passata o tutti gli user
     app.get("/users/get/:email?", auth.authenticate, getUsers)
 
-    // //ENDPOINT POST che permette di aggiungere un user al database
+    //ENDPOINT POST che permette di aggiungere un user al database
     app.post("/users/add", auth.authenticate, createUser)
 
     //ENDPOINT DI TIPO PUT che aggiorna un documento in base a cosa è stato passato nell'header

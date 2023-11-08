@@ -1,0 +1,2445 @@
+{
+	"info": {
+		"_postman_id": "46bbe937-73dd-4e3e-89a8-3547c1e7fed5",
+		"name": "Cloud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21332848"
+	},
+	"item": [
+		{
+			"name": "Tokens",
+			"item": [
+				{
+					"name": "comments",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get :id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/get/1",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "content",
+											"value": "comment3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "content",
+											"value": "modified comment2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/update/285e",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"update",
+										"285e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/delete/285e",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"delete",
+										"285e"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "posts",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/get/?order=default&limit=2",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"get",
+										""
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "default"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "post2",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "content2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/put",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"put"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get:id",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "get/:email",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsImlhdCI6MTY4MzgxODIzNywiZXhwIjoxNjgzOTA0NjM3fQ.6zFEyNkPTa2k_EMZ7z6F82yb5WC5TIShUEdgx0Incgc",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/users/get/carlos@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get",
+										"carlos@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsImlhdCI6MTY4MzgxODIzNywiZXhwIjoxNjgzOTA0NjM3fQ.6zFEyNkPTa2k_EMZ7z6F82yb5WC5TIShUEdgx0Incgc",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlo@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlo",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "carlo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsImlhdCI6MTY4MzgxODIzNywiZXhwIjoxNjgzOTA0NjM3fQ.6zFEyNkPTa2k_EMZ7z6F82yb5WC5TIShUEdgx0Incgc",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlos@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlos",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/update",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "carlo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsImlhdCI6MTY4MzgxODIzNywiZXhwIjoxNjgzOTA0NjM3fQ.6zFEyNkPTa2k_EMZ7z6F82yb5WC5TIShUEdgx0Incgc",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "localhost:4000/users/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsImlhdCI6MTY4MzgxODIzNywiZXhwIjoxNjgzOTA0NjM3fQ.6zFEyNkPTa2k_EMZ7z6F82yb5WC5TIShUEdgx0Incgc",
+										"type": "text"
+									},
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/users/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Default",
+			"item": [
+				{
+					"name": "posts",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/get/?order=default&limit=2",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"get",
+										""
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "default"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "post2",
+											"type": "text"
+										},
+										{
+											"key": "content",
+											"value": "content2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/put",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"put"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "id",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get:id",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "comments",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get :id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/get/1",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"get",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "content",
+											"value": "comment3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "content",
+											"value": "modified comment2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/update/285e",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"update",
+										"285e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/posts/afbf/comments/delete/285e",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"posts",
+										"afbf",
+										"comments",
+										"delete",
+										"285e"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "get/:email",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/users/get/carlo@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get",
+										"carlo@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlo@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlo",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "put",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "carlo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "carlo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlos@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlos",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/update",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "carlo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "carlo",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "paolo@gmail.com",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "paolo@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "paolo",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/users/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Esame",
+			"item": [
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "get?[filters]",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/books/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"get"
+									],
+									"query": [
+										{
+											"key": "isbn",
+											"value": "9781593279509",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "Practical Modern JavaScript",
+											"disabled": true
+										},
+										{
+											"key": "pages",
+											"value": "352",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "isbn",
+											"value": "isbn1",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "titolo1",
+											"type": "text"
+										},
+										{
+											"key": "subtitle",
+											"value": "sottotitolo1",
+											"type": "text"
+										},
+										{
+											"key": "author",
+											"value": "autore1",
+											"type": "text"
+										},
+										{
+											"key": "publisher",
+											"value": "pubblicatore1",
+											"type": "text"
+										},
+										{
+											"key": "pages",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "descrizione1",
+											"type": "text"
+										},
+										{
+											"key": "purchases",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/books/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "isbn",
+											"value": "modified-isbn",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "modified title",
+											"type": "text"
+										},
+										{
+											"key": "subtitle",
+											"value": "modified subtitle",
+											"type": "text"
+										},
+										{
+											"key": "author",
+											"value": "modified author",
+											"type": "text"
+										},
+										{
+											"key": "publisher",
+											"value": "modified publisher",
+											"type": "text"
+										},
+										{
+											"key": "pages",
+											"value": "321",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "modified description",
+											"type": "text"
+										},
+										{
+											"key": "purchases",
+											"value": "321",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/books/update/isbn1",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"update",
+										"isbn1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buyers",
+					"item": [
+						{
+							"name": "get/isbn",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/books/get/modified-isbn/buyers",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"get",
+										"modified-isbn",
+										"buyers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "first_name",
+											"value": "nome1",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "cognome1",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "email@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/books/add/modified-isbn/buyers",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"add",
+										"modified-isbn",
+										"buyers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete/email",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/books/modified-isbn/delete/buyers/email@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"modified-isbn",
+										"delete",
+										"buyers",
+										"email@gmail.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "paolo@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "paolo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:4000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJEpBSVJRelhPRHd2MlREaHBaTUpJUk8xYzNnYU1McXdESWZ4MTJDd21pUmZJNUZWV1VldEFXIiwicm9sZSI6InJ3IiwiaWF0IjoxNjg0NDE0MDE0LCJleHAiOjE2ODQ1MDA0MTR9.dvGzGhmfeMHlSc7E7diODpNBrMExcEtyvBsDICWTnTQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Noleggio-film",
+			"item": [
+				{
+					"name": "Films",
+					"item": [
+						{
+							"name": "get?[filters]",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/films/get?order=desc",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"get"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "desc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "testTitle",
+											"type": "text"
+										},
+										{
+											"key": "director",
+											"value": "io",
+											"type": "text"
+										},
+										{
+											"key": "duration",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "plot",
+											"value": "plotting",
+											"type": "text"
+										},
+										{
+											"key": "rating",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "release_date",
+											"value": "11/11/2011",
+											"type": "text"
+										},
+										{
+											"key": "genre",
+											"value": "genre[]=Comedy&genre[]=Irony",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cast",
+											"value": "cast[0][name]=tua&cast[0][surname]=mia&cast[0][age]=19\n\n",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/films/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update?[id]",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "modtestTitle",
+											"type": "text"
+										},
+										{
+											"key": "director",
+											"value": "sempre io",
+											"type": "text"
+										},
+										{
+											"key": "duration",
+											"value": "321",
+											"type": "text"
+										},
+										{
+											"key": "plot",
+											"value": "plotted",
+											"type": "text"
+										},
+										{
+											"key": "rating",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "release_date",
+											"value": "22/22/2022",
+											"type": "text"
+										},
+										{
+											"key": "genre",
+											"value": "[\"Comedy\",\"Irony\"]",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "cast",
+											"value": "[{\"name\": \"tua\", \"surname\": \"mia\", \"eta\":19}]",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/films/update?id=950604",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"update"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "950604"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Renters",
+					"item": [
+						{
+							"name": "get/isbn",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/films/get/950604/renters",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"get",
+										"950604",
+										"renters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "first_name",
+											"value": "nome1",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "cognome1",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "email@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/films/add/950604/renters",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"add",
+										"950604",
+										"renters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete/email",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/films/950604/delete/renters/email@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"films",
+										"950604",
+										"delete",
+										"renters",
+										"email@gmail.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "paolo@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "paolo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:4000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhb2xvQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHZodkEuWS5kaTRkYXdYa0o4aUtIME8wYzdqZ3kwUFFmc0pPNTRYNXU3VzNDMFRUUHB1RmI2Iiwicm9sZSI6InJ3IiwiaWF0IjoxNjk3MDE3OTA5LCJleHAiOjE2OTcxMDQzMDl9.sj3dSk2RWUSoYAgJXddHAIFF9EVkXM-Y9GFNETNYs7E",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Middle-ware",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/users/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get/:email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:4000/users/get/carlo@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"get",
+										"carlo@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlo@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlo",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update/:email (admin)",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "carlos@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "carlos",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/update/carlo@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"update",
+										"carlo@gmail.com"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update (user)",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "password",
+											"value": "carlo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/update",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete/:email",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "paolo@gmail.com",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/delete/carlos@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"delete",
+										"carlos@gmail.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "get?[filters]",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:4000/books/get",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"get"
+									],
+									"query": [
+										{
+											"key": "isbn",
+											"value": "9781593279509",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "Practical Modern JavaScript",
+											"disabled": true
+										},
+										{
+											"key": "pages",
+											"value": "352",
+											"disabled": true
+										},
+										{
+											"key": "order",
+											"value": "desc",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "isbn",
+											"value": "isbn1",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "titolo1",
+											"type": "text"
+										},
+										{
+											"key": "subtitle",
+											"value": "sottotitolo1",
+											"type": "text"
+										},
+										{
+											"key": "author",
+											"value": "autore1",
+											"type": "text"
+										},
+										{
+											"key": "publisher",
+											"value": "pubblicatore1",
+											"type": "text"
+										},
+										{
+											"key": "pages",
+											"value": "123",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "descrizione1",
+											"type": "text"
+										},
+										{
+											"key": "purchases",
+											"value": "123",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/books/add",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "email",
+										"value": "{{email}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "isbn",
+											"value": "modified-isbn",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "modified title",
+											"type": "text"
+										},
+										{
+											"key": "subtitle",
+											"value": "modified subtitle",
+											"type": "text"
+										},
+										{
+											"key": "author",
+											"value": "modified author",
+											"type": "text"
+										},
+										{
+											"key": "publisher",
+											"value": "modified publisher",
+											"type": "text"
+										},
+										{
+											"key": "pages",
+											"value": "321",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "modified description",
+											"type": "text"
+										},
+										{
+											"key": "purchases",
+											"value": "321",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/books/update/isbn1",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"books",
+										"update",
+										"isbn1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete/:isbn",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "email",
+											"value": "paolo@gmail.com",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:4000/users/delete/carlos@gmail.com",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"users",
+										"delete",
+										"carlos@gmail.com"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", res.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{adminMail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPw}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:4000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var res = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", res.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:4000/refresh",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:4000/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "adminMail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminPw",
+			"value": ""
+		},
+		{
+			"key": "userMail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userPw",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
