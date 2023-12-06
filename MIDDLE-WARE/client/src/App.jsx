@@ -6,7 +6,7 @@ import Pages from './pages/Pages';
 function App() {
 
   return (<>
-    <Header name="Titolo App"/>
+    <Header name="Titolo App" />
     <Pages />
     <Footer />
   </>

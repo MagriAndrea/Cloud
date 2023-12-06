@@ -4,7 +4,7 @@ import List from '../components/List';
 const ToDos = () => {
     const [text, setText] = useState("")
     const [todos, setTodos] = useState([])
-    const [id, setId] = useState(0)
+    const [id, setId] = useState(1)
 
     const inputRef = useRef(null);
 
