@@ -55,7 +55,7 @@ const Home = () => {
           >
             {apiResponse?.recipes.map((recipe) => (
               <SplideSlide key={recipe.id} className="hover:cursor-pointer p-2 m-1 bg-opacity-10 bg-white rounded-lg">
-                <Link className="flex flex-col justify-end items-center" to={"recipe/"+recipe.id}>
+                <Link className="flex flex-col justify-end items-center" to={`/recipe/${recipe.title}/${recipe.id}`}>
                   <h3>{recipe.title}</h3>
                   <img src={recipe.image} alt={recipe.title} width="90%" />
                 </Link>

@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import RelatedRecipes from './RelatedRecipes';
+import sanitizeHtml from 'sanitize-html'
+import parse from "html-react-parser"
 
 const Recipes = () => {
 
-    const {id} = useParams()
+    const { id } = useParams() //Estrae il parametro id perchè abbiamo definito questo elemento come /recipe/:id
     const [response, setResponse] = useState();
 
     useEffect(() => {
@@ -17,12 +20,11 @@ const Recipes = () => {
         })
             .then(res => {
                 setResponse(res.data)
-                console.log(res.data)
             })
             .catch(err => {
                 console.log(err)
             })
-    }, [])
+    }, [id])
 
     return (
         <>
@@ -30,9 +32,10 @@ const Recipes = () => {
                 <div className='flex flex-col justify-end items-center p-2 bg-opacity-10 bg-white rounded-lg'>
                     <p className='p-2 text-2xl'>{response.title}</p>
                     <img className='p-2' src={response.image} alt={response.title} />
-                    <p className='p-2' dangerouslySetInnerHTML={{__html: response.summary}}></p>
+                    <p className='p-2'>{parse(sanitizeHtml(response.summary))}</p>
                 </div>
             ) : (<p>Caricamento...</p>)}
+            <RelatedRecipes id={id} />
         </>
     );
 };

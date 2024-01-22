@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/recipes" element={<Recipes/>} />
-        <Route path="/recipe/:id" element={<Recipe/>} /> {/*Super easy passare il parametro id, basta usare useParams*/}
+        <Route path="/recipe/:slug/:id" element={<Recipe/>} /> {/*Super easy passare il parametro id, basta usare useParams*/}
       </Routes>
       {/*<ReactQueryDevtools initialIsOpen={false} position="bottom-right" />*/}
     </QueryClientProvider>

@@ -4,40 +4,46 @@ import { Link } from 'react-router-dom';
 
 const Recipes = () => {
 
-    const [response, setResponse] = useState();
-    const api_cache = sessionStorage.getItem("recipes_api_cache")
+    const [apiResponse, setApiResponse] = useState();
+
+    const fetchData = () => {
+        const url = "https://api.spoonacular.com/recipes/random";
+        axios.get(url, {
+            params: {
+                apiKey: import.meta.env.VITE_API_KEY,
+                number: 10,
+            }
+        }).then(response => {
+            sessionStorage.setItem("recipes_api_cache", JSON.stringify(response.data))
+            setApiResponse(response.data)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     useEffect(() => {
-        if (!api_cache) {
-            const url = "https://api.spoonacular.com/recipes/random";
-            axios.get(url, {
-                params: {
-                    apiKey: import.meta.env.VITE_API_KEY,
-                    number: 10,
-                }
-            })
-                .then(res => {
-                    setResponse(res.data.recipes)
-                    sessionStorage.setItem("recipes_api_cache", JSON.stringify(res.data.recipes))
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        const apiCache = sessionStorage.getItem("recipes_api_cache")
+
+        if (!apiCache) {
+            fetchData()
         } else {
-            setResponse(JSON.parse(api_cache))
+            setApiResponse(JSON.parse(apiCache))
         }
     }, [])
 
     return (
+        <>
         <div className='grid grid-rows-4 gap-4 grid-cols-3 p-2'>
-            {response?.map((recipe) => (
-                <Link key={recipe.id} to={"/recipe/"+recipe.id}
-                className='hover:cursor-pointer flex flex-col justify-end items-center p-2 bg-opacity-10 bg-white rounded-lg'>
+            {apiResponse?.recipes.map((recipe) => (
+                <Link key={recipe.id} to={`/recipe/${recipe.title}/${recipe.id}`}
+                    className='hover:cursor-pointer flex flex-col justify-end items-center p-2 bg-opacity-10 bg-white rounded-lg'>
                     <p className="text-2xl font-bold"> {recipe.title}</p>
                     <img src={recipe.image} alt={recipe.title}></img>
                 </Link>
             ))}
         </div>
+        <button className="bg-gray-900 hover:bg-gray-700 active:bg-gray-600 p-2 m-2 rounded-lg" onClick={() => fetchData()}>Nuove ricette</button>
+        </>
     );
 };
 
