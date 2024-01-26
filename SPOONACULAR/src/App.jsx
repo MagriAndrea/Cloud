@@ -3,24 +3,26 @@ import Home from "./Pages/Home"
 import Recipes from "./Pages/Recipes"
 import Recipe from "./Pages/Recipe"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Layout from "./Layout/Layout"
+import Register from "./Pages/Register"
+import Login from "./Pages/Login"
+import Dashboard from "./Pages/Dashboard"
 
 function App() {
 
   const queryClient = new QueryClient()
 
   return <>
-  <Layout>
-    <QueryClientProvider client={queryClient} contextSharing={true}>
+    <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/recipes" element={<Recipes/>} />
-        <Route path="/recipe/:slug/:id" element={<Recipe/>} /> {/*Super easy passare il parametro id, basta usare useParams*/}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/recipes" element={<Recipes />} />
+        <Route path="/recipe/:slug/:id" element={<Recipe />} /> {/*Super easy passare il parametro id, basta usare useParams*/}
       </Routes>
-      {/*<ReactQueryDevtools initialIsOpen={false} position="bottom-right" />*/}
-    </QueryClientProvider>
-  </Layout>
+    </Layout>
   </>
 }
 

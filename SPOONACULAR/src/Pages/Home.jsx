@@ -41,7 +41,7 @@ const Home = () => {
       {error ? (
         <p>C'è stato un errore nella richiesta</p>
       ) : (
-        <div>
+        <div className="">
           <h1>Ricette Casuali</h1>
           <Splide
             className="flex flex-col items-center"

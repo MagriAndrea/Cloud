@@ -62,7 +62,7 @@ const RelatedRecipes = ({ id }) => {
                         }}
                     >
                         {apiResponse?.recipes.map((recipe) => (
-                            <SplideSlide key={recipe.id} className="hover:cursor-pointer bg-opacity-10 bg-white rounded-lg">
+                            <SplideSlide key={recipe.id} className="hover:cursor-pointer bg-opacity-10 bg-white rounded-lg pb-6">
                                 <Link className="flex flex-col justify-end items-center" to={`/recipe/${recipe.title}/${recipe.id}`} onClick={() => scrollToTop()}>
                                     <h3>{recipe.title}</h3>
                                     <img src={recipe.image} alt={recipe.title} width="90%" />
