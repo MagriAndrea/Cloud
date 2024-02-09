@@ -17,6 +17,9 @@ function Layout({ children }) {
           <Link to="/login" className="text-blue-500 text-4xl hover:text-blue-800">
             Login
           </Link>
+          <Link to="/dashboard" className="text-blue-500 text-4xl hover:text-blue-800">
+            Dash
+          </Link>
         </div>
       </nav>
       <main className='h-full'>{children}</main>
