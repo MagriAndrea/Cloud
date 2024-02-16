@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios"
+import "../app.css"
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -71,6 +72,7 @@ function Register() {
             Invia
           </button>
         </form>
+
       </div>
     </>
   );

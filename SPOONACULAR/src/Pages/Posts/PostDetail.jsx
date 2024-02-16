@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import "../../app.css"
 
 function PostDetail() {
     const [title, setTitle] = useState("");
@@ -9,7 +10,7 @@ function PostDetail() {
     const [email, setEmail] = useState("paolo@gmail.com")
     const [password, setPassword] = useState("paolo")
 
-    const [errorResponse, setErrorResponse] = useState({});
+    const [response, setResponse] = useState()
 
     const [isUpdate, setIsUpdate] = useState(false)
     const { id } = useParams()
@@ -36,14 +37,16 @@ function PostDetail() {
 
     //Nel caso sia un update, i viecchi dati devono essere presi
     const getPosts = () => {
-        axios.get("http://localhost:4000/posts/get/" + id, {headers})
+        axios.get("http://localhost:4000/posts/get/" + id, { headers })
             .then((res) => {
                 console.log(res.data)
+
                 setTitle(res.data.title)
                 setContent(res.data.content)
+
             }).catch((err) => {
                 console.log(err)
-                setErrorResponse(err.response)
+                setResponse(err.response)
             })
     }
 
@@ -56,10 +59,10 @@ function PostDetail() {
             headers: headers,
         })
             .then((res) => {
-                navigate("/dashboard");
+                setResponse(res)
             })
             .catch((err) => {
-                setErrorResponse(err.response);
+                setError(err.response);
             });
     };
 
@@ -77,6 +80,7 @@ function PostDetail() {
         }
     };
 
+    //Quando viene fatto il submit del post
     const handleSubmit = (e) => {
         e.preventDefault();
         editPost()
@@ -85,17 +89,22 @@ function PostDetail() {
     return (
         <>
             {/*ALERT*/}
-            {errorResponse?.status == 401 ? (
-                <div
-                    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                    role="alert"
-                >
-                    <strong class="font-bold">{errorResponse.status} </strong>
-                    <span class="block sm:inline">{errorResponse.data}</span>
-                </div>
+            {response ? (
+                response.status == 200 ? (
+                    <div class="alertSuccess" role="alert">
+                        <strong class="font-bold">200 </strong>
+                        <span class="block sm:inline">Successo</span>
+                    </div>
+                ) : (
+                    <div class="alertError" role="alert">
+                        <strong class="font-bold">{response.status} </strong>
+                        <span class="block sm:inline">{response.data}</span>
+                    </div>
+                )
             ) : (
                 ""
             )}
+
 
             <div className="flex justify-center h-full mt-4">
                 <div className="w-2/3 p-8 bg-gray-700 rounded-lg shadow-xl">

@@ -59,7 +59,7 @@ function Dashboard() {
       : ""
       }
 
-    <Link to="/posts/detail" className="heading">
+    <Link to="/posts/detail" className="button">
       Nuovo Post
     </Link>
     <div className="flex justify-center h-full mt-4">
@@ -96,8 +96,8 @@ function Dashboard() {
                 {item.content}
               </div>
               <div className="item flex justify-evenly">
-                <div className="action" onClick={() => {deletePost(item.id)}}>Elimina</div>
-                <div className="action" onClick={() => {updatePost(item.id)}}>Modifica</div>
+                <div className="actionUpdate" onClick={() => {updatePost(item.id)}}>Modifica</div>
+                <div className="actionDelete" onClick={() => {deletePost(item.id)}}>Elimina</div>
               </div>
             </React.Fragment>
           ))

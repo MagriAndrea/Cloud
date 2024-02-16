@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import "../app.css"
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ function Login() {
         </div>
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 hover:bg-blue-600 rounded-md font-bold"
+          className="button"
         >
           Invia
         </button>

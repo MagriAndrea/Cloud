@@ -164,12 +164,11 @@ exports.posts = (app, client, database) => {
 
     //ENDPOINT DI TIPO PUT che aggiorna un post in base all'id
     app.put("/posts/put/:id", async (req, res) => {
-        console.log("ciao")
+
         const authenticate = await auth.authentication(client, database, req)
 
         //Controllo autenticazione
         if (authenticate === 200) {
-            console.log("DEBUG: posts/put/ chiamato")
 
             //Contollo che il parametro sia stato passato
             if (req.params.id) {

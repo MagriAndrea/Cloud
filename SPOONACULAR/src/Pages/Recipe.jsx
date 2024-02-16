@@ -7,7 +7,7 @@ import parse from "html-react-parser"
 
 const Recipes = () => {
 
-    const { id } = useParams() //Estrae il parametro id perchè abbiamo definito questo elemento come /recipe/:id
+    const {id} = useParams() //Estrae il parametro id perchè abbiamo definito questo elemento come /recipe/:id
     const [response, setResponse] = useState();
 
     useEffect(() => {
