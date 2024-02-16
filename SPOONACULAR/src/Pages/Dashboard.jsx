@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"
+import "../app.css"
+import { useNavigate, Link} from "react-router-dom";
 
 function Dashboard() {
  
@@ -7,6 +9,7 @@ function Dashboard() {
   const [errorResponse, setErrorResponse] = useState({})
   const [email, setEmail] = useState("paolo@gmail.com")
   const [password, setPassword] = useState("paolo")
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get("http://localhost:4000/posts/get", {
@@ -23,54 +26,78 @@ function Dashboard() {
   })
   }, [])
 
-  
+  const deletePost = (id) => {
+    axios.delete(
+      "http://localhost:4000/posts/delete/" + id,
+      {
+          headers: {
+              email: email,
+              password: password,
+          },
+      }
+  )
+      .then((res) => {
+        setApiResponse(apiResponse.filter((post) => post.id !== id))
+      })
+      .catch((err) => {
+        setErrorResponse(err.response);
+      });
+  }
+
+  const updatePost = (id) => {
+    navigate("/posts/detail/" + id) //Gestire pagina di modifica
+  }
 
   return (
     <>
     {/*ALERT*/}
-    {errorResponse.status == 401 ? 
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+    {errorResponse?.status == 401 ? 
+      <div class="alert" role="alert">
         <strong class="font-bold">{errorResponse.status} </strong>
         <span class="block sm:inline">{errorResponse.data}</span>
       </div>
       : ""
       }
 
+    <Link to="/posts/detail" className="heading">
+      Nuovo Post
+    </Link>
     <div className="flex justify-center h-full mt-4">
+      
       <div className="w-2/3 p-8 bg-gray-700 rounded-lg shadow-xl text-white">
 
-        <h1 className="text-3xl font-bold mb-4 text-center">Dashboard</h1>
+        <h1 className="title">Dashboard</h1>
 
         <div className="grid grid-cols-4 gap-2">
 
-          <div className="bg-blue-500 p-2 rounded-md text-center">
+          <div className="heading">
             ID
           </div>
-          <div className="bg-blue-500 p-2 rounded-md text-center">
+          <div className="heading">
             Titolo
           </div>
-          <div className="bg-blue-500 p-2 rounded-md text-center">
+          <div className="heading">
             Contenuto
           </div>
-          <div className="bg-blue-500 p-2 rounded-md text-center">
+          <div className="heading">
             Azioni
           </div>
 
           {apiResponse ? 
           apiResponse?.map((item) => (
             <React.Fragment key={item.id}>
-              <div className="bg-gray-600 p-2 rounded-md text-center">
+              <div className="item">
                 {item.id}
               </div>
-              <div className="bg-gray-600 p-2 rounded-md text-center">
+              <div className="item">
                 {item.title}
               </div>
-              <div className="bg-gray-600 p-2 rounded-md text-center">
+              <div className="item">
                 {item.content}
               </div>
-              <div className="bg-gray-600 p-2 rounded-md text-center flex justify-evenly">
-                <div className="bg-white cursor-pointer bg-opacity-10 px-1 rounded-md hover:bg-opacity-20">Elimina</div>
-                <div className="bg-white cursor-pointer bg-opacity-10 px-1 rounded-md hover:bg-opacity-20">Modifica</div>
+              <div className="item flex justify-evenly">
+                <div className="action" onClick={() => {deletePost(item.id)}}>Elimina</div>
+                <div className="action" onClick={() => {updatePost(item.id)}}>Modifica</div>
               </div>
             </React.Fragment>
           ))

@@ -32,7 +32,6 @@ function Register() {
       : ""
       }
       
-
       <div className="flex justify-center items-center h-screen bg-slate-800">
         <form
           onSubmit={handleSubmit}
@@ -67,7 +66,7 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-blue-500 hover:bg-blue-600 rounded-md font-bold"
+            className="button"
           >
             Invia
           </button>

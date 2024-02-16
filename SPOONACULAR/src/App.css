@@ -1,42 +1,23 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.title {
+  @apply text-3xl font-bold mb-4 text-center
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.heading {
+  @apply bg-blue-500 p-2 rounded-md text-center
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.item {
+  @apply bg-gray-600 p-2 rounded-md text-center 
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.action {
+  @apply bg-white cursor-pointer bg-opacity-10 px-1 rounded-md hover:bg-opacity-20;
 }
 
-.card {
-  padding: 2em;
+.alert {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative
 }
 
-.read-the-docs {
-  color: #888;
+.button {
+  @apply w-full py-2 bg-blue-500 hover:bg-blue-600 rounded-md font-bold
 }

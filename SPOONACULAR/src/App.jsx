@@ -6,6 +6,7 @@ import Layout from "./Layout/Layout"
 import Register from "./Pages/Register"
 import Login from "./Pages/Login"
 import Dashboard from "./Pages/Dashboard"
+import PostDetail from "./Pages/Posts/PostDetail"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/recipes" element={<Recipes />} />
+        <Route path="/posts/detail/:id?" element={<PostDetail/>} />
         <Route path="/recipe/:slug/:id" element={<Recipe />} /> {/*Super easy passare il parametro id, basta usare useParams*/}
       </Routes>
     </Layout>
