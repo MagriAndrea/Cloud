@@ -1,17 +1,44 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import "../app.css"
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorResponse, setErrorResponse] = useState({})
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log(email, password);
+    axios.post("http://localhost:4000/login", {
+      email : email,
+      password: password
+    }, 
+    {
+      withCredentials: true
+    }
+    ).then((res) => {
+      console.log(res)
+      navigate("/dashboard")
+    }).catch((err) => {
+      setErrorResponse(err)
+    })
+
   };
 
   return (
+    <>
+    {/*ALERT*/}
+    {errorResponse.status == 401 ? 
+      <div class="alertError" role="alert">
+        <strong class="font-bold">{errorResponse.status} </strong>
+        <span class="block sm:inline">{errorResponse.data}</span>
+      </div>
+      : ""
+      }
+
     <div className="flex justify-center items-center h-screen bg-slate-800">
       <form
         onSubmit={handleSubmit}
@@ -52,6 +79,7 @@ function Login() {
         </button>
       </form>
     </div>
+    </>
   );
 }
 

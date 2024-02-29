@@ -17,7 +17,8 @@ function Dashboard() {
       headers: {
         email: email,
         password: password
-      }
+      },
+      withCredentials : true
     }).then((res) => {
       console.log(res.data)
       setApiResponse(res.data)
