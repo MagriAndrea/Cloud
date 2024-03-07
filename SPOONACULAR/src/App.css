@@ -6,6 +6,10 @@
   @apply bg-blue-500 p-2 rounded-md text-center
 }
 
+.navHeading {
+  @apply text-blue-500 text-4xl hover:text-blue-800
+}
+
 .item {
   @apply bg-gray-600 p-2 rounded-md text-center 
 }

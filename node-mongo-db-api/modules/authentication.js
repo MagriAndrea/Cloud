@@ -3,10 +3,10 @@ exports.authentication = async (client, database, req) => {
     if (req.session.email) {
         //Questo serve perche tutti i nostri api sono progettati per lavorare con req.headers.email
         req.headers.email = req.session.email
-
+        //Se nella session è salvata l'email allora vuol dire che ...
         return 200
 
-    } else { //Nel caso non si usa la sessione, utilizzo il metodo vecchio
+    } else { //Nel caso non si usa la sessione, utilizzo il metodo vecchio...
 
         const collection = database.collection('data');
 

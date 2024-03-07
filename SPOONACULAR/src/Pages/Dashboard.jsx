@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios"
 import "../app.css"
 import { useNavigate, Link } from "react-router-dom";
+import useCheckLogin from "../functions/useCheckLogin";
 
 function Dashboard() {
 
@@ -12,13 +13,14 @@ function Dashboard() {
   const [password, setPassword] = useState("paolo")
   const navigate = useNavigate()
 
+  useCheckLogin()
+
   useEffect(() => {
     axios.get("http://localhost:4000/posts/get", {
       headers: {
         email: email,
         password: password
-      },
-      withCredentials : true
+      }
     }).then((res) => {
       console.log(res.data)
       setApiResponse(res.data)

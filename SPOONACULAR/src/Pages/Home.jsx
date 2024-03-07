@@ -19,7 +19,7 @@ const Home = () => {
       }).then(response => {
         sessionStorage.setItem("home_api_cache", JSON.stringify(response.data))
         setApiResponse(response.data)
-      }).catch(error => {
+      }).catch(error => { 
         setError(error)
       })
   }

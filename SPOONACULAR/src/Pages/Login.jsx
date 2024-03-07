@@ -15,12 +15,10 @@ function Login() {
     axios.post("http://localhost:4000/login", {
       email : email,
       password: password
-    }, 
-    {
-      withCredentials: true
     }
     ).then((res) => {
       console.log(res)
+      console.log(' aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
       navigate("/dashboard")
     }).catch((err) => {
       setErrorResponse(err)

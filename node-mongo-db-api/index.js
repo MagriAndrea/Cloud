@@ -19,7 +19,7 @@ app.use(cors({
     credentials : true
 }));
 
-//Aggiungo sessione
+//Questo aggiunge la funzionalità delle sessioni e manda un cookie chiamato connect.sid al client
 app.use(session({
     secret: 'keyboard cat', 
     resave: true,
