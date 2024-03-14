@@ -3,10 +3,13 @@ import axios from "axios";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import { Link } from "react-router-dom";
+import useCheckLogin from "../functions/useCheckLogin";
 
 const Home = () => {
   const [error, setError] = useState()
   const [apiResponse, setApiResponse] = useState();
+
+  useCheckLogin()
 
   //Questa funzione si occupa di prendere i dati e metterli dentro gli useState
   const fetchData = () => {

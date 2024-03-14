@@ -12,13 +12,11 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    axios.post("http://localhost:4000/login", {
+    axios.post("/login", {
       email : email,
       password: password
     }
     ).then((res) => {
-      console.log(res)
-      console.log(' aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
       navigate("/dashboard")
     }).catch((err) => {
       setErrorResponse(err)

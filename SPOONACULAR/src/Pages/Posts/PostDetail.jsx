@@ -7,9 +7,6 @@ function PostDetail() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
-    const [email, setEmail] = useState("paolo@gmail.com")
-    const [password, setPassword] = useState("paolo")
-
     const [response, setResponse] = useState()
 
     const [isUpdate, setIsUpdate] = useState(false)
@@ -19,10 +16,6 @@ function PostDetail() {
     const body = {
         title: title,
         content: content,
-    }
-    const headers = {
-        email: email,
-        password: password,
     }
 
     const navigate = useNavigate(); // Per gestire il redirect
@@ -37,7 +30,7 @@ function PostDetail() {
 
     //Nel caso sia un update, i viecchi dati devono essere presi
     const getPosts = () => {
-        axios.get("http://localhost:4000/posts/get/" + id, { headers })
+        axios.get("/posts/get/" + id)
             .then((res) => {
                 console.log(res.data)
 
@@ -55,10 +48,11 @@ function PostDetail() {
         axios({
             url: url,
             method: method,
-            data: body,
-            headers: headers,
+            data: body
         })
             .then((res) => {
+                console.log(body);
+                console.log(res)
                 setResponse(res)
             })
             .catch((err) => {
@@ -69,12 +63,12 @@ function PostDetail() {
     const editPost = () => {
         if (isUpdate) {
             sendRequest(
-                "http://localhost:4000/posts/put/" + id,
+                "/posts/put/" + id,
                 "put"
             );
         } else {
             sendRequest(
-                "http://localhost:4000/posts/add",
+                "/posts/add",
                 "post"
             );
         }
@@ -91,14 +85,14 @@ function PostDetail() {
             {/*ALERT*/}
             {response ? (
                 response.status == 200 ? (
-                    <div class="alertSuccess" role="alert">
-                        <strong class="font-bold">200 </strong>
-                        <span class="block sm:inline">Successo</span>
+                    <div className="alertSuccess" role="alert">
+                        <strong className="font-bold">200 </strong>
+                        <span className="block sm:inline">Successo</span>
                     </div>
                 ) : (
-                    <div class="alertError" role="alert">
-                        <strong class="font-bold">{response.status} </strong>
-                        <span class="block sm:inline">{response.data}</span>
+                    <div className="alertError" role="alert">
+                        <strong className="font-bold">{response.status} </strong>
+                        <span className="block sm:inline">{response.data}</span>
                     </div>
                 )
             ) : (

@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useCheckLogin from '../functions/useCheckLogin';
 
 const Recipes = () => {
 
     const [apiResponse, setApiResponse] = useState();
+
+    useCheckLogin()
 
     const fetchData = () => {
         const url = "https://api.spoonacular.com/recipes/random";

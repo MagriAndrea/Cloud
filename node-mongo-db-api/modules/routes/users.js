@@ -3,6 +3,7 @@ exports.users = (app, client, database) => {
     const auth = require('../authentication');
 
     app.get('/users/get', async (req, res) => {
+        console.log("DEBUG: Chiamato endpoint /users/get")
 
         const authenticate = await auth.authentication(client, database, req);
         
@@ -41,7 +42,7 @@ exports.users = (app, client, database) => {
     });
 
     app.get('/users/get/:email', async (req, res) => {
-
+        console.log("DEBUG: Chiamato endpoint /users/get/:email")
         const authenticate = await auth.authentication(client, database, req);
         
         if ( authenticate === 200 ) {
@@ -77,9 +78,9 @@ exports.users = (app, client, database) => {
     });
 
     app.post('/users/add', async (req, res) => {
-
+        console.log("DEBUG: Chiamato endpoint /users/add")
         try {
-
+            console.log(`DEBUG: req.body: ${req.body}`)
             const collection = database.collection('data');
 
             const checkUser = await collection.find({email: req.body.email}).toArray();

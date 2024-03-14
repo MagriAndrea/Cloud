@@ -16,17 +16,14 @@ const app = express();
 
 app.use(cors({
     origin: (_, callback) => callback(null, true),
-    credentials : true
+    credentials: true
 }));
 
 //Questo aggiunge la funzionalità delle sessioni e manda un cookie chiamato connect.sid al client
 app.use(session({
-    secret: 'keyboard cat', 
+    secret: 'keyboard cat',
     resave: true,
-    saveUninitialized: true, 
-    cookie: {
-        sameSite: "lax"
-    }
+    saveUninitialized: true,
 }));
 
 //CONNETTO AL DATABASE
@@ -51,3 +48,24 @@ app.listen(4000, () => {
 //AGGIUNGO GLI ENDPOINT
 
 routes.routes(app, client, database);
+
+
+//AVVIO IL FRONT END SULLA PORTA 9000
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'dist')));
+
+reactRoutes = [
+    "/",
+    "/register",
+    "/login",
+    "/dashboard",
+    "/recipes",
+    "/posts/detail/:id?",
+    "/recipe/:slug/:id"
+]
+
+app.get(reactRoutes, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+//app.listen(9000)

@@ -9,19 +9,12 @@ function Dashboard() {
   const [apiResponse, setApiResponse] = useState();
   const [massIds, setMassIds] = useState([])
   const [errorResponse, setErrorResponse] = useState()
-  const [email, setEmail] = useState("paolo@gmail.com")
-  const [password, setPassword] = useState("paolo")
   const navigate = useNavigate()
 
   useCheckLogin()
 
   useEffect(() => {
-    axios.get("http://localhost:4000/posts/get", {
-      headers: {
-        email: email,
-        password: password
-      }
-    }).then((res) => {
+    axios.get("/posts/get").then((res) => {
       console.log(res.data)
       setApiResponse(res.data)
     }).catch((err) => {
@@ -32,15 +25,7 @@ function Dashboard() {
 
   const deletePost = (id) => {
     {/*Faccio una chiamata all'endpoint delete passando id */ }
-    axios.delete(
-      "http://localhost:4000/posts/delete/" + id,
-      {
-        headers: {
-          email: email,
-          password: password,
-        },
-      }
-    ) //Filtro l'array senza richiedere i dati
+    axios.delete("/posts/delete/" + id) //Filtro l'array senza richiedere i dati
       .then((res) => {
         setApiResponse(apiResponse.filter((post) => post.id !== id))
       })
@@ -52,15 +37,7 @@ function Dashboard() {
   const deleteMassPosts = () => {
     console.log(typeof(massIds))
     massIds.map(id => {
-      axios.delete(
-        "http://localhost:4000/posts/delete/" + id,
-        {
-          headers: {
-            email: email,
-            password: password,
-          },
-        }
-      ).then((res) => {
+      axios.delete("/posts/delete/" + id).then((res) => {
         setApiResponse(apiResponse.filter((post) => post.id !== id))
       }).catch((err) => {
         setErrorResponse(err.response);

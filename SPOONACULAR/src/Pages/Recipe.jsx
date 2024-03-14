@@ -4,11 +4,14 @@ import { useParams } from 'react-router';
 import RelatedRecipes from './RelatedRecipes';
 import sanitizeHtml from 'sanitize-html'
 import parse from "html-react-parser"
+import useCheckLogin from '../functions/useCheckLogin';
 
 const Recipes = () => {
 
     const {id} = useParams() //Estrae il parametro id perchè abbiamo definito questo elemento come /recipe/:id
     const [response, setResponse] = useState();
+
+    useCheckLogin()
 
     useEffect(() => {
         const url = "https://api.spoonacular.com/recipes/" + id + "/information";

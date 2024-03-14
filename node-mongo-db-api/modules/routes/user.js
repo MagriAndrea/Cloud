@@ -1,6 +1,7 @@
 exports.users = (app, client, database) => {
 
     app.post('/login', async (req, res) => {
+        
         console.log("DEBUG: Chiamato endpoint /login")
 
         const collection = database.collection('data');
@@ -17,7 +18,8 @@ exports.users = (app, client, database) => {
             console.log("DEBUG: Loggato con successo!")
             //Salvo la mail dell'utente sulla sessione del server
             //Ogni volta che il valore req.session viene toccato, un hash viene generato e mandato al client
-            req.session.email = req.body.email; 
+            req.session.email = req.body.email;
+            console.log(req.session.email);
 
             //In realta questo non serve per rimandare il cookie al client, express-session lo fa gia in automatico ogni volta che si tocca req.session
             //Questo ritorna l'email nel body della risposta
@@ -34,7 +36,6 @@ exports.users = (app, client, database) => {
     //Endpoint per vedere se c'è il login
     app.get('/check-login', async (req,res) => {
         console.log("DEBUG: Chiamato endpoint /check-login")
-        console.log(req.session.email);
         if (req.session.email) {
             console.log("DEBUG: Loggato")
             res.sendStatus(200)

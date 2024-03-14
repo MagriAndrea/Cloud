@@ -5,7 +5,7 @@ function useCheckLogin() {
     const navigate = useNavigate()
     const location = useLocation()
 
-    axios.get("http://localhost:4000/check-login")
+    axios.get("/check-login")
     .then(() => {
         //Nel caso non dia errori, e non sono nella dashboard, vai nella dashboard
         if (location.pathname !=="/dashboard") {

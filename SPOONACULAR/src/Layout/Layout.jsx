@@ -6,7 +6,7 @@ function Layout({ children }) {
   const navigate = useNavigate()
 
   const logout = () => {
-    axios.get('http://localhost:3000/logout')
+    axios.get('/logout')
     .then(() => {
       navigate('/login')
     }).catch((err) => {
