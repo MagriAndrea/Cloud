@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "paolo@gmail.com",
+      "nome": "Paolo",
+      "cognome": "Rossi",
+      "età": 35
+    },
+    {
+      "id": "2",
+      "email": "laura.bianchi@example.com",
+      "nome": "Laura",
+      "cognome": "Bianchi",
+      "età": 28
+    },
+    {
+      "id": "3",
+      "email": "marco.verdi@example.com",
+      "nome": "Marco",
+      "cognome": "Verdi",
+      "età": 42
+    },
+    {
+      "id": "c4f9"
+    }
+  ]
+}
