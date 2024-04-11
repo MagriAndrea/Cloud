@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "paolo@gmail.com",
+      "nome": "Paolo",
+      "cognome": "Rossi",
+      "eta": 35
+    },
+    {
+      "id": "2",
+      "email": "laura.bianchi@example.com",
+      "nome": "Laura",
+      "cognome": "Bianchi",
+      "eta": 28
+    },
+    {
+      "id": "3",
+      "email": "marco.verdi@example.com",
+      "nome": "Marco",
+      "cognome": "Verdi",
+      "eta": 42
+    }
+  ],
+  "books": [
+    {
+      "isbn": "978-3-16-148410-0",
+      "titolo": "La storia infinita",
+      "numeroPagine": 392,
+      "disponibile": true
+    },
+    {
+      "isbn": "978-0-14-032872-1",
+      "titolo": "Il Signore degli Anelli",
+      "numeroPagine": 1178,
+      "disponibile": false
+    },
+    {
+      "isbn": "978-1-86197-876-9",
+      "titolo": "1984",
+      "numeroPagine": 328,
+      "disponibile": true
+    }
+  ]
+}
