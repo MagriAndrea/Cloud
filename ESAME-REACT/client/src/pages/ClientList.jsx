@@ -19,22 +19,9 @@ const ClientList = () => {
   }, [clients, searchTerm]);
 
   return (
-    <div>
-      <h2>LISTA CLIENTI</h2>
-      <input
-        type="text"
-        placeholder="Ricerca per nome"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <ul>
-        {filteredClients.map((client) => (
-          <li key={client.id}>
-            {client.nome} {client.cognome} (Age: {client.eta})
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Table striped highlightOnHover withColumnBorders>
+      {/* {...rows} */}
+    </Table>
   );
 };
 

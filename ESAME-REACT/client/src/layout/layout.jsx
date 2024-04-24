@@ -2,6 +2,7 @@ import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Layout.module.css';
 import ToggleColorScheme from '../components/ToggleColorScheme';
+import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   const [opened, { toggle }] = useDisclosure();
@@ -25,10 +26,9 @@ export default function Layout() {
           <Group justify="space-between" style={{ flex: 1 }}>
             Biblioteca
             <Group ml="xl" gap={6} visibleFrom="sm">
-              <UnstyledButton className={classes.control}>Home</UnstyledButton>
-              <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-              <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-              <UnstyledButton className={classes.control}>Support</UnstyledButton>
+              {routes.map(() => (
+                <UnstyledButton className={classes.control}></UnstyledButton>
+              ))}
             </Group>
           </Group>
           <Group ml="xl" gap={0}>
@@ -45,8 +45,7 @@ export default function Layout() {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        Navbar is only visible on mobile, links that are rendered in the header on desktop are
-        hidden on mobile in header and rendered in navbar instead.
+        <Outlet/>
       </AppShell.Main>
     </AppShell>
   );
