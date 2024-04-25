@@ -1,12 +1,15 @@
+import { useFetch } from '@mantine/hooks';
 import { useState, useEffect } from 'react';
+import { TextInput, Table } from '@mantine/core';
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { data, loading, error, refetch, abort } = useFetch()
 
   useEffect(() => {
-    //fetch api
+
   }, []);
 
   useEffect(() => {
@@ -18,10 +21,23 @@ const ClientList = () => {
     setFilteredClients(filtered);
   }, [clients, searchTerm]);
 
+  //TODO
+  //Guarda componenti per search, 
+  //usa useFetch e guarda come implementarlo
+
   return (
-    <Table striped highlightOnHover withColumnBorders>
-      {/* {...rows} */}
-    </Table>
+    <>
+      {error && <Text c="red">{error.message}</Text>}
+
+      <TextInput
+        label="Inserisci nome o cognome"
+        placeholder="Nome... Cognome..."
+      />
+
+      <Table striped highlightOnHover withColumnBorders>
+
+      </Table>
+    </>
   );
 };
 

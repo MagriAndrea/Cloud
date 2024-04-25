@@ -1,17 +1,17 @@
-import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
+import { AppShell, Burger, Group, Title, Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './Layout.module.css';
+import { Link, Outlet } from 'react-router-dom';
 import ToggleColorScheme from '../components/ToggleColorScheme';
-import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   const [opened, { toggle }] = useDisclosure();
 
-  const routes = [
-    { name: "Lista Clienti", path: "/clientlist" },
-    { name: "Dettaglio Clienti", path: "/clientdetail" },
-    { name: "Lista Libri", path: "/booklist" },
-    { name: "Dettaglio Libri", path: "/bookdetail" },
+  const links = [
+    { label: "Lista Clienti", link: "/clientlist" },
+    { label: "Dettaglio Clienti", link: "/clientdetail" },
+    { label: "Lista Libri", link: "/booklist" },
+    { label: "Dettaglio Libri", link: "/bookdetail" },
   ]
 
   return (
@@ -24,24 +24,23 @@ export default function Layout() {
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
           <Group justify="space-between" style={{ flex: 1 }}>
-            Biblioteca
-            <Group ml="xl" gap={6} visibleFrom="sm">
-              {routes.map(() => (
-                <UnstyledButton className={classes.control}></UnstyledButton>
+            <Title component={Link} to="/">Libreria</Title>
+            <Group ml="xl" gap={0} visibleFrom="sm">
+              {links.map((link, index) => (
+                <Button key={index} component={Link} to={link.link} variant='subtle' className={classes.control}>{link.label}</Button>
               ))}
             </Group>
           </Group>
-          <Group ml="xl" gap={0}>
+          <Group>
             <ToggleColorScheme />
           </Group>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar py="md" px={4}>
-        <UnstyledButton className={classes.control}>Home</UnstyledButton>
-        <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-        <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-        <UnstyledButton className={classes.control}>Support</UnstyledButton>
+        {links.map((link, index) => (
+          <Button key={index} component={Link} to={link.link} variant='subtle' className={classes.control}>{link.label}</Button>
+        ))}
       </AppShell.Navbar>
 
       <AppShell.Main>
