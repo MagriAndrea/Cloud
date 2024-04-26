@@ -1,43 +1,69 @@
-import { useFetch } from '@mantine/hooks';
-import { useState, useEffect } from 'react';
-import { TextInput, Table } from '@mantine/core';
+import { useFetch } from "@mantine/hooks";
+import { useState, useEffect } from "react";
+import { TextInput, Table, Group, Text, LoadingOverlay, Center} from "@mantine/core";
+import.meta.env.VITE_API_BASE_URL //Non va
 
 const ClientList = () => {
-  const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const { data, loading, error, refetch, abort } = useFetch()
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  //UseFetch si occupa di fare il primo fetch e in caso di refetch si usa la funzione refetch
+  const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/users`);
+  
+  //Funzione che serve per filtrare su qualunque campo di un oggetto
+  const anyKeyFilter = item => obj =>
+  Object.values(obj).some(value =>
+    String(value).toLowerCase().includes(item)
+  );
 
-  useEffect(() => {
+useEffect(() => {
+  const filtered = data?.filter(anyKeyFilter(searchTerm.toLowerCase()));
+  setFilteredClients(filtered);
+}, [searchTerm, data]);
+  
 
-  }, []);
-
-  useEffect(() => {
-    // Filter clients based on search term
-    const filtered = clients.filter((client) =>
-      client.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.cognome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredClients(filtered);
-  }, [clients, searchTerm]);
-
-  //TODO
-  //Guarda componenti per search, 
-  //usa useFetch e guarda come implementarlo
+  const rows = filteredClients?.map((element) => (
+    <Table.Tr key={element.id}>
+      <Table.Td>{element.id}</Table.Td>
+      <Table.Td>{element.email}</Table.Td>
+      <Table.Td>{element.nome}</Table.Td>
+      <Table.Td>{element.cognome}</Table.Td>
+      <Table.Td>{element.eta}</Table.Td>
+      <Table.Td></Table.Td>
+    </Table.Tr>
+  ));
 
   return (
-    <>
+    <Group>
+      
+      <Group>
+        <TextInput
+          label="Cerca"
+          placeholder="Inserisci termine di ricerca"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.currentTarget.value)}
+        />
+      </Group>
+      
       {error && <Text c="red">{error.message}</Text>}
 
-      <TextInput
-        label="Inserisci nome o cognome"
-        placeholder="Nome... Cognome..."
-      />
-
-      <Table striped highlightOnHover withColumnBorders>
-
-      </Table>
-    </>
+      <Group justify="center">
+        <Table striped highlightOnHover withColumnBorders>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>ID</Table.Th>
+              <Table.Th>EMAIL</Table.Th>
+              <Table.Th>NOME</Table.Th>
+              <Table.Th>COGNOME</Table.Th>
+              <Table.Th>ETA</Table.Th>
+              <Table.Th>AZIONI</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }}/>
+          <Table.Tbody>{rows}</Table.Tbody>
+        </Table>
+      </Group>
+    </Group>
   );
 };
 

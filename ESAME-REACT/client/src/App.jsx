@@ -1,8 +1,8 @@
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route, Navigate } from "react-router-dom"
 import ClientList from "./pages/ClientList"
 import ClientDetail from "./pages/ClientDetail"
-import BookList from 'c:/Users/Swer4/Cloud/ESAME-REACT/client/src/pages/BookList'
-import BookDetail from 'c:/Users/Swer4/Cloud/ESAME-REACT/client/src/pages/BookDetail'
+import BookList from './pages/BookList'
+import BookDetail from './pages/BookDetail'
 import classes from "./App.module.css"
 import '@mantine/core/styles.css';
 import { MantineProvider, createTheme, rem } from '@mantine/core';
@@ -79,7 +79,7 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="light">
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <RouterProvider router={router} />
     </MantineProvider>
   )
