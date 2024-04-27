@@ -10,7 +10,7 @@ const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   //UseFetch si occupa di fare il primo fetch e in caso di refetch si usa la funzione refetch
-  const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/users`);
+  const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/books`);
 
   //Funzione che serve per filtrare su qualunque campo di un oggetto
   const anyKeyFilter = item => obj =>
@@ -25,12 +25,11 @@ const BookList = () => {
   }, [searchTerm, data]);
 
   const rows = filteredBooks?.map((element) => (
-    <Table.Tr key={element.id}>
-      <Table.Td>{element.id}</Table.Td>
-      <Table.Td>{element.email}</Table.Td>
-      <Table.Td>{element.nome}</Table.Td>
-      <Table.Td>{element.cognome}</Table.Td>
-      <Table.Td>{element.eta}</Table.Td>
+    <Table.Tr key={element.isbn}>
+      <Table.Td>{element.isbn}</Table.Td>
+      <Table.Td>{element.titolo}</Table.Td>
+      <Table.Td>{element.numeroPagine}</Table.Td>
+      <Table.Td>{element.quantitaDisponibile}</Table.Td>
       <Table.Td>
         <Group gap={5}>
           <Button variant="default"> <BsTrash3 /> </Button>
@@ -60,11 +59,10 @@ const BookList = () => {
         <Table striped highlightOnHover withColumnBorders stickyHeader >
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>ID</Table.Th>
-              <Table.Th>EMAIL</Table.Th>
-              <Table.Th>NOME</Table.Th>
-              <Table.Th>COGNOME</Table.Th>
-              <Table.Th>ETA</Table.Th>
+              <Table.Th>ISBN</Table.Th>
+              <Table.Th>TITOLO</Table.Th>
+              <Table.Th>NUMERO PAGINE</Table.Th>
+              <Table.Th>COPIE DISPONIBILI</Table.Th>
               <Table.Th>AZIONI</Table.Th>
             </Table.Tr>
           </Table.Thead>
