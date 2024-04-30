@@ -1,76 +1,6 @@
 {
   "users": [
     {
-      "id": "1",
-      "email": "john.doe@example.com",
-      "nome": "John",
-      "cognome": "Doe",
-      "eta": 30
-    },
-    {
-      "id": "2",
-      "email": "jane.smith@example.com",
-      "nome": "Jane",
-      "cognome": "Smith",
-      "eta": 25
-    },
-    {
-      "id": "3",
-      "email": "paolo.rossi@gmail.com",
-      "nome": "Paolo",
-      "cognome": "Rossi",
-      "eta": 35
-    },
-    {
-      "id": "4",
-      "email": "emily.johnson@example.com",
-      "nome": "Emily",
-      "cognome": "Johnson",
-      "eta": 28
-    },
-    {
-      "id": "5",
-      "email": "michael.brown@example.com",
-      "nome": "Michael",
-      "cognome": "Brown",
-      "eta": 40
-    },
-    {
-      "id": "6",
-      "email": "laura.wilson@example.com",
-      "nome": "Laura",
-      "cognome": "Wilson",
-      "eta": 22
-    },
-    {
-      "id": "7",
-      "email": "david.anderson@example.com",
-      "nome": "David",
-      "cognome": "Anderson",
-      "eta": 33
-    },
-    {
-      "id": "8",
-      "email": "sophia.thomas@example.com",
-      "nome": "Sophia",
-      "cognome": "Thomas",
-      "eta": 29
-    },
-    {
-      "id": "9",
-      "email": "alexander.martin@example.com",
-      "nome": "Alexander",
-      "cognome": "Martin",
-      "eta": 37
-    },
-    {
-      "id": "10",
-      "email": "olivia.harris@example.com",
-      "nome": "Olivia",
-      "cognome": "Harris",
-      "eta": 24
-    },
-    {
       "id": "11",
       "email": "john.doe@example.com",
       "nome": "John",
@@ -216,31 +146,36 @@
       "isbn": "978-3-16-148410-0",
       "titolo": "La storia infinita",
       "numeroPagine": 392,
-      "quantitaDisponibile": 100
+      "quantitaDisponibile": 100,
+      "id": "5c48"
     },
     {
       "isbn": "978-1-23-456789-0",
       "titolo": "Harry Potter and the Sorcerer's Stone",
       "numeroPagine": 320,
-      "quantitaDisponibile": 100
+      "quantitaDisponibile": 100,
+      "id": "2fd5"
     },
     {
       "isbn": "978-0-06-112008-4",
       "titolo": "To Kill a Mockingbird",
       "numeroPagine": 281,
-      "quantitaDisponibile": 100
+      "quantitaDisponibile": 100,
+      "id": "3aa7"
     },
     {
       "isbn": "978-0-345-39180-3",
       "titolo": "1984",
       "numeroPagine": 328,
-      "quantitaDisponibile": 100
+      "quantitaDisponibile": 100,
+      "id": "d8fd"
     },
     {
       "isbn": "978-0-679-72395-1",
       "titolo": "The Great Gatsby",
       "numeroPagine": 180,
-      "quantitaDisponibile": 100
+      "quantitaDisponibile": 100,
+      "id": "8ebd"
     }
   ]
 }

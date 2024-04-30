@@ -1,20 +1,21 @@
 import { useFetch } from "@mantine/hooks";
 import { useState, useEffect } from "react";
 import { TextInput, Table, Group, Text, Button, Container, Space, Tooltip, Divider, Loader, Popover, Stack } from "@mantine/core";
-import { useMantineTheme } from '@mantine/core'
+import axios from 'axios'
 
 //Icone
 import { BsTrash3 } from "react-icons/bs";
 import { FaEdit, FaRedo } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
-import { IoMdAdd, IoMdSad } from "react-icons/io";
+import { IoMdAdd } from "react-icons/io";
+import { Navigate, useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
 
 import.meta.env.VITE_API_BASE_URL //Non va
 
 const ClientList = () => {
   const [filteredClients, setFilteredClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const theme = useMantineTheme()
 
   //UseFetch si occupa di fare il primo fetch e in caso di refetch si usa la funzione refetch
   const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/users`);
@@ -31,6 +32,28 @@ const ClientList = () => {
     setFilteredClients(filtered);
   }, [searchTerm, data]);
 
+  //Eliminazione record
+  const elimina = (id) => {
+    axios.delete(`http://localhost:3000/users/${id}`).then((response) => (response))
+    setFilteredClients(filteredClients.filter((client) => {
+      return client.id != id
+    }))
+    //Dovrebbe uscire la notifica ma boh non va
+    notifications.show({
+      title: "DELETE",
+      message: "Riga eliminata con successo!",
+      color: "deleteButtonRed"
+    })
+    
+  }
+
+
+  //Modifica
+  const navigate = useNavigate()
+  const modifica = (id) => {
+    navigate(`/clientdetail/${id}`)
+  }
+
   //Generazione righe della tabella
   const rows = filteredClients?.map((element) => (
     <Table.Tr key={element.id}>
@@ -40,7 +63,9 @@ const ClientList = () => {
       <Table.Td>{element.cognome}</Table.Td>
       <Table.Td>{element.eta}</Table.Td>
       <Table.Td>
+        {/* Sezione azioni */}
         <Group gap={5}>
+          {/* Pulsante cancella con popover di conferma */}
           <Popover withArrow arrowPosition="side" arrowOffset={5} arrowSize={5} position="top" offset={2}>
             <Popover.Target>
               <Tooltip label="Elimina">
@@ -50,17 +75,18 @@ const ClientList = () => {
             <Popover.Dropdown>
               <Stack>
                 <Text size="xs" align='center'>
-                  Confermi l'eleminazione?
+                  Confermi l'eliminazione?
                 </Text>
-                <Button>
+                <Button onClick={() => { elimina(element.id) }}>
                   Conferma
                 </Button>
               </Stack>
             </Popover.Dropdown>
           </Popover>
 
+          {/* Pulsante modifica */}
           <Tooltip label="Modifica">
-            <Button variant="default" c='editButtonGreen'> <FaEdit /> </Button>
+            <Button variant="default" c='editButtonGreen' onClick={() => {modifica(element.id)}}> <FaEdit /> </Button>
           </Tooltip>
         </Group>
       </Table.Td>
@@ -82,7 +108,8 @@ const ClientList = () => {
 
       {/* Spazi ed errori */}
       <Space h="xl" />
-      {error && <><Text c="red">{error.message}</Text><Space h="xl" /></>}
+      {/* Non posso crederci che error lo devo gestire io altrimenti rimane sempre valorizzato anche dopo che data é ritornato dalla fetch */}
+      {!data && error && <><Text c="red">{error.message}</Text><Space h="xl" /></>}
       <Divider />
       <Space h="xl" />
 

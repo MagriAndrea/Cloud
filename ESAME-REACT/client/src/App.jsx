@@ -6,6 +6,8 @@ import BookDetail from './pages/BookDetail'
 import classes from "./App.module.css"
 import '@mantine/core/styles.css';
 import { MantineProvider, createTheme, rem } from '@mantine/core';
+import { Notifications } from '@mantine/notifications'
+import '@mantine/notifications/styles.css'
 import Layout from "./layout/layout";
 
 //Dichiaro valori che uso in tutto il programma
@@ -45,9 +47,9 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route index element={<Navigate to="/clientlist" />} />
       <Route path="clientlist" element={<ClientList />} />
-      <Route path="clientdetail" element={<ClientDetail />} />
+      <Route path="clientdetail/:id?" element={<ClientDetail />} />
       <Route path="booklist" element={<BookList />} />
-      <Route path="bookdetail" element={<BookDetail />} />
+      <Route path="bookdetail/:id?" element={<BookDetail />} />
     </Route>
   )
 );
@@ -56,6 +58,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
+      <Notifications />
       <RouterProvider router={router} />
     </MantineProvider>
   )

@@ -19,7 +19,7 @@ export default function Layout() {
           <Group h="100%" px="md">
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
             <Group justify="space-between" style={{ flex: 1 }}>
-              <Group style={{'color': 'inherit', 'text-decoration' : 'none' }} component={Link} to="/">
+              <Group style={{'color': 'inherit', 'textDecoration' : 'none' }} component={Link} to="/">
                 <FaBookOpen size={32}/>
                 <Title >Libreria</Title>
               </Group>
