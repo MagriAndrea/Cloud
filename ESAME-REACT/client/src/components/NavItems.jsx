@@ -7,17 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const links = [
     { label: "Lista Clienti", link: "/clientlist" },
-    { label: "Dettaglio Clienti", link: "/clientdetail" },
     { label: "Lista Libri", link: "/booklist" },
-    { label: "Dettaglio Libri", link: "/bookdetail" },
 ]
 
 export default function NavItems() {
     const [activeLink, setActiveLink] = useState(links[0].link);
     const navigate = useNavigate()
-    const linkButtons = links.map((link, index) => (
-        <Button key={index} component={Link} to={link.link} variant='subtle' className={classes.control}>{link.label}</Button>
-      ))
+
     const items = links.map((link) => (
         <Button
             key={link.link}

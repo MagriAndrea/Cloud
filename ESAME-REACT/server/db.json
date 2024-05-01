@@ -1,39 +1,11 @@
 {
   "users": [
     {
-      "id": "11",
-      "email": "john.doe@example.com",
-      "nome": "John",
-      "cognome": "Doe",
-      "eta": 30
-    },
-    {
-      "id": "12",
-      "email": "jane.smith@example.com",
-      "nome": "Jane",
-      "cognome": "Smith",
-      "eta": 25
-    },
-    {
-      "id": "13",
-      "email": "paolo.rossi@gmail.com",
-      "nome": "Paolo",
-      "cognome": "Rossi",
-      "eta": 35
-    },
-    {
-      "id": "14",
-      "email": "emily.johnson@example.com",
-      "nome": "Emily",
-      "cognome": "Johnson",
-      "eta": 28
-    },
-    {
-      "id": "15",
-      "email": "michael.brown@example.com",
       "nome": "Michael",
-      "cognome": "Brown",
-      "eta": 40
+      "cognome": "Brownn",
+      "email": "michael.brown@example.com",
+      "eta": 40,
+      "id": "15"
     },
     {
       "id": "16",
@@ -69,13 +41,6 @@
       "nome": "Olivia",
       "cognome": "Harris",
       "eta": 24
-    },
-    {
-      "id": "21",
-      "email": "john.doe@example.com",
-      "nome": "John",
-      "cognome": "Doe",
-      "eta": 30
     },
     {
       "id": "22",
@@ -139,43 +104,43 @@
       "nome": "Olivia",
       "cognome": "Harris",
       "eta": 24
+    },
+    {
+      "id": "6e99",
+      "nome": "dfasdf",
+      "cognome": "asdfasd",
+      "email": "fasdfasdf@gmail.com",
+      "eta": "12"
     }
   ],
   "books": [
     {
-      "isbn": "978-3-16-148410-0",
-      "titolo": "La storia infinita",
-      "numeroPagine": 392,
-      "quantitaDisponibile": 100,
-      "id": "5c48"
-    },
-    {
-      "isbn": "978-1-23-456789-0",
-      "titolo": "Harry Potter and the Sorcerer's Stone",
-      "numeroPagine": 320,
-      "quantitaDisponibile": 100,
-      "id": "2fd5"
-    },
-    {
-      "isbn": "978-0-06-112008-4",
-      "titolo": "To Kill a Mockingbird",
-      "numeroPagine": 281,
-      "quantitaDisponibile": 100,
-      "id": "3aa7"
-    },
-    {
-      "isbn": "978-0-345-39180-3",
+      "isbn": "978-0-345-391812",
       "titolo": "1984",
       "numeroPagine": 328,
       "quantitaDisponibile": 100,
-      "id": "d8fd"
+      "id": "4c1a",
+      "acquirenti": []
     },
     {
       "isbn": "978-0-679-72395-1",
       "titolo": "The Great Gatsby",
       "numeroPagine": 180,
       "quantitaDisponibile": 100,
-      "id": "8ebd"
+      "id": "04d0",
+      "acquirenti": [
+        "15"
+      ]
+    },
+    {
+      "isbn": "1234567898764",
+      "titolo": "dsfsdf",
+      "numeroPagine": "23",
+      "quantitaDisponibile": "1231",
+      "id": "fad4",
+      "acquirenti": [
+        "15"
+      ]
     }
   ]
 }
