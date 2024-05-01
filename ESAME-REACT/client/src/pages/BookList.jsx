@@ -13,8 +13,6 @@ import { IoMdAdd, IoIosArrowBack } from "react-icons/io";
 
 import.meta.env.VITE_API_BASE_URL //Non va
 
-
-
 const BookList = () => {
   const { showClientId } = useParams()
   const { selectClientId } = useParams()
@@ -55,7 +53,6 @@ const BookList = () => {
     })
 
   }
-
 
   //Modifica
   const navigate = useNavigate()
@@ -140,7 +137,7 @@ const BookList = () => {
       <Table.Td>{book.titolo}</Table.Td>
       <Table.Td>{book.numeroPagine}</Table.Td>
 
-        {!showClientId && <Table.Td>{book.quantitaDisponibile}</Table.Td>}
+      {!showClientId && <Table.Td>{book.quantitaDisponibile}</Table.Td>}
       <Table.Td>
         {/* Sezione azioni */}
         <Group gap={5} justify="space-evenly">
@@ -172,14 +169,14 @@ const BookList = () => {
               </Popover>
             </>
             :
-            showClientId ? 
-            <Tooltip label="Rimuovi">
-              <Button variant="default" c='deleteButtonRed' onClick={() => { eliminaClienteDaAcquirenti(book) }}> <BsTrash3 /> </Button>
-            </Tooltip>
-            : 
-            <Tooltip label="Aggiungi">
-              <Button variant="default" c='blue' onClick={() => { aggiungiClienteAdAcquirenti(book) }}> <IoMdAdd size={24} /> </Button>
-            </Tooltip>
+            showClientId ?
+              <Tooltip label="Rimuovi">
+                <Button variant="default" c='deleteButtonRed' onClick={() => { eliminaClienteDaAcquirenti(book) }}> <BsTrash3 /> </Button>
+              </Tooltip>
+              :
+              <Tooltip label="Aggiungi">
+                <Button variant="default" c='blue' onClick={() => { aggiungiClienteAdAcquirenti(book) }}> <IoMdAdd size={24} /> </Button>
+              </Tooltip>
           }
 
         </Group>
@@ -223,9 +220,9 @@ const BookList = () => {
             <Button leftSection={<IoMdAdd size={20} />} onClick={() => { dettagli() }}>Nuovo Libro</Button>
             :
             !selectClientId ?
-            <Button leftSection={<IoMdAdd size={20} />} onClick={() => { apriBooklistSelect() }}>Aggiungi Libro</Button>
-            :
-            <Button leftSection={<IoIosArrowBack size={20} />} onClick={() => { apriBooklistShow() }}>Torna alla lista</Button>
+              <Button leftSection={<IoMdAdd size={20} />} onClick={() => { apriBooklistSelect() }}>Aggiungi Libro</Button>
+              :
+              <Button leftSection={<IoIosArrowBack size={20} />} onClick={() => { apriBooklistShow() }}>Torna alla lista</Button>
           }
         </Group>
       </Group>

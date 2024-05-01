@@ -120,7 +120,9 @@
       "numeroPagine": 328,
       "quantitaDisponibile": 100,
       "id": "4c1a",
-      "acquirenti": []
+      "acquirenti": [
+        "15"
+      ]
     },
     {
       "isbn": "978-0-679-72395-1",
@@ -128,9 +130,7 @@
       "numeroPagine": 180,
       "quantitaDisponibile": 100,
       "id": "04d0",
-      "acquirenti": [
-        "15"
-      ]
+      "acquirenti": []
     },
     {
       "isbn": "1234567898764",
