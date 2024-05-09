@@ -20,7 +20,7 @@ const BookList = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   //UseFetch si occupa di fare il primo fetch e in caso di refetch si usa la funzione refetch
-  const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/books`);
+  const { data, loading, error, refetch, abort } = useFetch(`http://192.168.122.86:3000/books`);
 
   //Funzione che serve per filtrare su tutti i campi di un oggetto
   const anyKeyFilter = item => obj =>
@@ -41,7 +41,7 @@ const BookList = () => {
 
   //Eliminazione record
   const elimina = (id) => {
-    axios.delete(`http://localhost:3000/books/${id}`).then((response) => (response))
+    axios.delete(`http://192.168.122.86:3000/books/${id}`).then((response) => (response))
     setFilteredBooks(filteredBooks.filter((book) => {
       return book.id != id
     }))
@@ -69,7 +69,7 @@ const BookList = () => {
     book.acquirenti = book.acquirenti?.filter((buyerId) => buyerId !== showClientId);
 
     //Aggiorno il libro con il nuovo array di acquirenti filtrato
-    axios.put(`http://localhost:3000/books/${book.id}`, book)
+    axios.put(`http://192.168.122.86:3000/books/${book.id}`, book)
       .then((response) => {
         if (response.status === 200) {
           notifications.show({
@@ -107,7 +107,7 @@ const BookList = () => {
     console.log(book)
 
     //Aggiorno il libro con il nuovo array di acquirenti filtrato
-    axios.put(`http://localhost:3000/books/${book.id}`, book)
+    axios.put(`http://192.168.122.86:3000/books/${book.id}`, book)
       .then((response) => {
         if (response.status === 200) {
           notifications.show({

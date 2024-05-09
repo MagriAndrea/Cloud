@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { notifications } from '@mantine/notifications';
 import { FaList } from "react-icons/fa";
+import.meta.env.VITE_API_BASE_URL
 
 function ClientDetail() {
   const { id } = useParams();
@@ -42,7 +43,7 @@ function ClientDetail() {
   useEffect(() => {
     if (id) {
 
-      axios.get(`http://localhost:3000/users/${id}`).then((response) => {
+      axios.get(`http://192.168.122.86:3000/users/${id}`).then((response) => {
         form.setValues({
           nome: response.data?.nome,
           cognome: response.data?.cognome,
@@ -60,7 +61,7 @@ function ClientDetail() {
     if (form.isValid) {
       //Se questa pagina è stata aperta con un param id, allora si tratta di una modifica
       if (id) {
-        axios.put(`http://localhost:3000/users/${id}`, form.getValues())
+        axios.put(`http://192.168.122.86:3000/users/${id}`, form.getValues())
           .then((response) => {
             if (response.status === 200) {
               notifications.show({
@@ -76,7 +77,7 @@ function ClientDetail() {
 
         //Altrimenti aggiunto il nuovo record
       } else {
-        axios.post(`http://localhost:3000/users`, form.getValues())
+        axios.post(`http://192.168.122.86:3000/users`, form.getValues())
           .then((response) => {
             if (response.status === 201) { //201 vuol dire "created"
               notifications.show({

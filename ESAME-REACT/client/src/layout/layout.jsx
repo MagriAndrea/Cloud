@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, Title, Button, Container } from '@mantine/core';
+import { AppShell, Burger, Group, Title, Container } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link, Outlet } from 'react-router-dom';
 import ToggleColorScheme from '../components/ToggleColorScheme';

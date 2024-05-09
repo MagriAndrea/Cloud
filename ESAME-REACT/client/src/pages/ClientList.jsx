@@ -1,4 +1,4 @@
-import { useFetch,useDisclosure } from "@mantine/hooks";
+import { useFetch} from "@mantine/hooks";
 import { useState, useEffect } from "react";
 import { TextInput, Table, Group, Text, Button, Container, Space, Tooltip, Divider, Loader, Popover, Stack, Modal } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ const ClientList = () => {
   const navigate = useNavigate()
 
   //UseFetch si occupa di fare il primo fetch e in caso di refetch si usa la funzione refetch
-  const { data, loading, error, refetch, abort } = useFetch(`http://localhost:3000/users`);
+  const { data, loading, error, refetch, abort } = useFetch(`http://192.168.122.86:3000/users`);
 
   //Funzione che serve per filtrare su tutti i campi di un oggetto
   const anyKeyFilter = item => obj =>
@@ -36,7 +36,7 @@ const ClientList = () => {
 
   //Eliminazione record
   const elimina = (id) => {
-    axios.delete(`http://localhost:3000/users/${id}`).then((response) => (response))
+    axios.delete(`http://192.168.122.86:3000/users/${id}`).then((response) => (response))
     setFilteredClients(filteredClients.filter((client) => {
       return client.id != id
     }))
